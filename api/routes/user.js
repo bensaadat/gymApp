@@ -5,11 +5,6 @@ const User = require("../controllers/user.controller.js");
 const multer = require('multer');
 var mkdirp = require('mkdirp');
 
-
-
-
-
-
 // Create a new User
 router.post("/signup", User.create);
 router.post("/login", User.login);
@@ -21,22 +16,22 @@ router.post("/loginjwt", User.loginjwt);
 // Retrieve all users
 router.get("/", User.findAll);
 
-//Uploads Apis 
+//Uploads Apis
 router.post('/UploadDoc', function (req, res) {
-  
+
   var storage = multer.diskStorage({
     destination: function(req, file, cb){
-      
+
       var dist = './public/uploads/';
         cb(null, dist);
     },
     filename: function(req, file, cb){
-        cb(null, file.originalname);  
-      
+        cb(null, file.originalname);
+
     },
 
-    
-  }); 
+
+  });
 var upload = multer({ storage:  storage}).single('image');
   upload(req, res, function (err) {
       var foldername = req.body.cin;
@@ -75,8 +70,8 @@ var moveFile = (file, dir2)=>{
 //move file1.htm from 'test/' to 'test/dir_1/'
 moveFile('./public/uploads/'+imageName, './public/uploads/'+foldername);
 
-    
+
   })
-  
+
 });
 module.exports = router;
