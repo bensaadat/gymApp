@@ -1,5 +1,5 @@
 const sql = require("./db.js");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const fs = require('fs');
 // constructor
 const User = function(user) {
