@@ -22,7 +22,7 @@ router.post('/UploadDoc', function (req, res) {
   var storage = multer.diskStorage({
     destination: function(req, file, cb){
 
-      var dist = './public/uploads/';
+      var dist = 'public/uploads/';
         cb(null, dist);
     },
     filename: function(req, file, cb){
@@ -37,7 +37,7 @@ var upload = multer({ storage:  storage}).single('image');
       var foldername = req.body.cin;
       var imageName = req.file.filename
       var imageType = req.body.imageType;
-  mkdirp('./public/uploads/'+foldername, function (err) {
+  mkdirp('public/uploads/'+foldername, function (err) {
     if (err){
        return res.status(404).json({
         status: false,
@@ -68,7 +68,7 @@ var moveFile = (file, dir2)=>{
   });
 };
 //move file1.htm from 'test/' to 'test/dir_1/'
-moveFile('./public/uploads/'+imageName, './public/uploads/'+foldername);
+moveFile('public/uploads/'+imageName, 'public/uploads/'+foldername);
 
 
   })
