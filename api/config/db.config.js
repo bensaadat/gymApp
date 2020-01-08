@@ -7,17 +7,17 @@
 //   };
 
   //BETA
-  module.exports = {
-    HOST: "localhost",
-    USER: "goprot",
-    PASSWORD: "cNHiiAE2VG-N68jWiNBBH",
-    DB: "goprotco_bda"
-  };
+//  module.exports = {
+//    HOST: "localhost",
+//    USER: "goprot",
+//    PASSWORD: "cNHiiAE2VG-N68jWiNBBH",
+//    DB: "goprotco_bda"
+//  };
 
   // PROD
-  // module.exports = {
-  //   HOST: "localhost",
-  //   USER: "goprot",
-  //   PASSWORD: "cNHiiAE2VG-N68jWiNBBH",
-  //   DB: "goprot_prod"
-  // };
+   module.exports = {
+     HOST: "localhost",
+     USER: "goprot",
+     PASSWORD: "cNHiiAE2VG-N68jWiNBBH",
+     DB: "goprot_prod"
+   };
