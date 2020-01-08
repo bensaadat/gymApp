@@ -94,12 +94,54 @@ exports.OrderDetail = (req, res) => {
 
   
 };
+
+// --------- Start Function OrderDetailBybarcode ----------------
+exports.OrderDetailByBarcode = (req, res) => {
+  // check if user autorized
+  Orders.authorized( req.body.cin,  (data)  => {
+    if(data){
+      // call function list ordes
+      Orders.SingleOrdesBybarcode(req.body.increment_id,(DataOrders, one) => {
+          return res.status(200).json({
+            status: true,
+            message: "Success  Autorisation",
+            data : DataOrders
+          });
+      });
+    }else{
+      return res.status(404).json({
+        status: false,
+        message: "No Autorisation",
+        data: []
+      });
+    }
+  });
+
+  
+};
 // --------- End Function OrderDetail ------------------
 
 
 // --------- Start Function isPicked -------------------
 exports.isPicked = (req, res) => {
   Orders.isPicked( req.body.order_id,  (data)  => {
+    if(data){
+    return res.status(404).json({
+      status: false,
+      message: "La commande a déjà été prise par un autre shipper veuillez choisir une autre commande à expédier",
+    });
+  }else{
+    return res.status(200).json({
+      status: true,
+      message: "Not Picked",
+    });
+  }
+});
+}
+
+// --------- Start Function isPicked -------------------
+exports.isPickedByBarcode = (req, res) => {
+  Orders.isPickedBybarcod( req.body.increment_id,  (data)  => {
     if(data){
     return res.status(404).json({
       status: false,

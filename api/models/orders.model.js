@@ -44,6 +44,25 @@ const Orders = function() {
            });   
          };
 
+         // check isPickedBybarcod
+        Orders.isPickedBybarcod = (increment_id, result) => {
+          sql.query(`SELECT * FROM sales_flat_order
+          WHERE statut_erp = 6 AND status = 'processing' 
+          AND sales_flat_order.increment_id = "${increment_id}"`, (err, res) => {
+                 if (err) {
+                   result(err, null);
+                   return err;
+                 }
+             // found costomer
+                 if (res.length) {
+                   result(true);
+                   return;
+                 }
+                 // not found user with the id
+                 result(false);
+           });   
+         };
+
         // calculate_gain
         Orders.calculate_gain = (city, group_id, result) => {
           // console.log(city);
@@ -167,6 +186,46 @@ const Orders = function() {
               JOIN sales_flat_order_payment ON sales_flat_order_payment.parent_id = sales_flat_order.entity_id
               WHERE sales_flat_order_address.address_type = "shipping" 
               AND sales_flat_order.entity_id = ${order_id} `, (err, res) => {
+                    if (err) {
+                      result(err, null);
+                      return err;
+                    }
+                // if not found orders
+                    if (res.length) {
+                      //console.log(res);
+                      result(res[0], res.length);
+                      return;
+                    }
+                    // not found user with the id
+                    result(false);
+              });   
+       };
+
+
+              // get Single Ordes By barcode 
+      Orders.SingleOrdesBybarcode = (increment_id, result) => {
+        //console.log(delivered(1,2));
+          sql.query(`SELECT sales_flat_order.entity_id, 
+            sales_flat_order_address.firstname,
+              sales_flat_order_address.firstname, 
+              sales_flat_order_address.lastname, 
+              sales_flat_order_address.city, 
+              sales_flat_order_payment.method, 
+              sales_flat_order_address.street, 
+              sales_flat_order_address.telephone, 
+              sales_flat_order_payment.amount_ordered, 
+              sales_flat_order.weight, 
+              sales_flat_order.commentaire, 
+              sales_flat_shipment_track.track_number,
+              sales_flat_order_address.latitude,
+              sales_flat_order_address.longitude 
+              FROM sales_flat_order  
+              JOIN sales_flat_order_address 
+              ON sales_flat_order_address.parent_id = sales_flat_order.entity_id 
+              JOIN sales_flat_shipment_track ON sales_flat_shipment_track.order_id = sales_flat_order.entity_id 
+              JOIN sales_flat_order_payment ON sales_flat_order_payment.parent_id = sales_flat_order.entity_id
+              WHERE sales_flat_order_address.address_type = "shipping" 
+              AND sales_flat_order.increment_id = ${increment_id} `, (err, res) => {
                     if (err) {
                       result(err, null);
                       return err;
