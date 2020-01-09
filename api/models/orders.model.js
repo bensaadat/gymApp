@@ -205,7 +205,7 @@ const Orders = function() {
               // get Single Ordes By barcode 
       Orders.SingleOrdesBybarcode = (increment_id, result) => {
         //console.log(delivered(1,2));
-          sql.query(`SELECT sales_flat_order.entity_id, 
+          sql.query(`SELECT IF(statut_erp=5 AND sales_flat_order.status = "processing", "collect", IF(statut_erp=6 AND sales_flat_order.status = "processing", "enLivraison", IF(statut_erp=2 AND sales_flat_order.status = "complete", "livre", IF(statut_erp=4 AND sales_flat_order.status = "tentative", "echec", IF(statut_erp=8 AND sales_flat_order.status = "erreur", "echec", "NAN"))))) as mode, sales_flat_order.entity_id, 
             sales_flat_order_address.firstname,
               sales_flat_order_address.firstname, 
               sales_flat_order_address.lastname, 
