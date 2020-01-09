@@ -14,6 +14,7 @@ router.post("/isPickedByBarcode", Orders.isPickedByBarcode); // check if is pick
 router.post("/changeStatus", Orders.changeStatus); // change statu of order
 router.post("/fetechOrderComment", Orders.fetechOrderCommentByShipperId); // fetechOrderComment
 router.post("/addComment", Orders.addComment); // fetechOrderComment
+router.post("/addLocation", Orders.addLocation); // addLocation
 //-------------------------------------------------------------------------------
 
 module.exports = router;
