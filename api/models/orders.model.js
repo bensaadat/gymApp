@@ -135,7 +135,8 @@ const Orders = function() {
         sales_flat_order.commentaire, 
         sales_flat_shipment_track.track_number,
         sales_flat_order_address.latitude,
-        sales_flat_order_address.longitude 
+        sales_flat_order_address.longitude,
+        sales_flat_order.date_statut_erp
         FROM sales_flat_order  
         JOIN sales_flat_order_address 
         ON sales_flat_order_address.parent_id = sales_flat_order.entity_id 
@@ -178,7 +179,8 @@ const Orders = function() {
               sales_flat_order.commentaire, 
               sales_flat_shipment_track.track_number,
               sales_flat_order_address.latitude,
-              sales_flat_order_address.longitude 
+              sales_flat_order_address.longitude,
+              sales_flat_order.date_statut_erp 
               FROM sales_flat_order  
               JOIN sales_flat_order_address 
               ON sales_flat_order_address.parent_id = sales_flat_order.entity_id 
@@ -218,7 +220,8 @@ const Orders = function() {
               sales_flat_order.commentaire, 
               sales_flat_shipment_track.track_number,
               sales_flat_order_address.latitude,
-              sales_flat_order_address.longitude 
+              sales_flat_order_address.longitude,
+              sales_flat_order.date_statut_erp 
               FROM sales_flat_order  
               JOIN sales_flat_order_address 
               ON sales_flat_order_address.parent_id = sales_flat_order.entity_id 
