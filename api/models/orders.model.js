@@ -416,6 +416,26 @@ sql.query(`UPDATE sales_flat_order SET statut_erp = 6, status = 'processing',  s
       
 
 
+      // Function addLocation 
+      Orders.addLocation = (firstName, lastName, phone, adresse,latitude, longitude, result ) => {
+        // sales_flat_order_status_history table
+        sql.query(`INSERT INTO localisations
+        (firstName, lastName, phone, adresse, latitude, longitude) 
+        VALUES ("${firstName}", "${lastName}", "${phone}", "${adresse}", "${latitude}", "${longitude}")`, (err, res) => {
+          if (err) {
+          console.log(err)  
+            result(err, null);
+            return err;
+          }
+          
+          
+          result(true);
+          return;
+        });   
+      };
+      
+
+
 
     
    

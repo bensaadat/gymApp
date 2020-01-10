@@ -284,3 +284,35 @@ exports.addComment = (req, res) => {
   })
 }
 // --------- End Function ftechOrderCommentByShipperId ----------------
+
+// --------- Start Function ftechOrderCommentByShipperId --------------
+exports.addLocation = (req, res) => {
+  Orders.authorized( req.body.cin,  (data)  => {
+    if(data == false){
+      return res.status(404).json({
+        status: false,
+        message: "No Autorisation",
+        data: []
+      });
+    }else{
+      Orders.addLocation( req.body.firstName, req.body.lastName, req.body.phone, req.body.adresse, req.body.latitude, req.body.longitude,  (data)  => {
+        //console.log(data)
+        if(data){
+        return res.status(200).json({
+          status: true,
+          message: "Location added",
+        });
+      }else{
+        return res.status(404).json({
+          status: false,
+          message: "Error add Location",
+        });
+      }
+    });
+
+    }
+
+    
+  })
+}
+// --------- End Function ftechOrderCommentByShipperId ----------------
