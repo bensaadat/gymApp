@@ -45,16 +45,18 @@ const Orders = function() {
          };
 
          // check isPickedBybarcod
-        Orders.isPickedBybarcod = (increment_id, result) => {
+        Orders.isPickedBybarcod = (increment_id,cin, result) => {
           sql.query(`SELECT * FROM sales_flat_order
-          WHERE statut_erp = 6 AND status = 'processing' 
-          AND sales_flat_order.increment_id = "${increment_id}"`, (err, res) => {
+		  LEFT JOIN users on users.id = user_erp
+          WHERE sales_flat_order.increment_id = "${increment_id}" and users.cin = "${cin}"`, (err, res) => {
                  if (err) {
                    result(err, null);
                    return err;
                  }
              // found costomer
-                 if (res.length) {
+		     console.log("Total Records:- " + res.length);
+
+                 if (res.length == 0) {
                    result(true);
                    return;
                  }

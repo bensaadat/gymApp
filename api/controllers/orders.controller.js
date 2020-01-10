@@ -128,7 +128,7 @@ exports.isPicked = (req, res) => {
     if(data){
     return res.status(404).json({
       status: false,
-      message: "La commande a déjà été prise par un autre shipper veuillez choisir une autre commande à expédier",
+      message: "Attention! cette commande ne vous est pas affectée",
     });
   }else{
     return res.status(200).json({
@@ -141,11 +141,11 @@ exports.isPicked = (req, res) => {
 
 // --------- Start Function isPicked -------------------
 exports.isPickedByBarcode = (req, res) => {
-  Orders.isPickedBybarcod( req.body.increment_id,  (data)  => {
+  Orders.isPickedBybarcod( req.body.increment_id, req.body.cin,  (data)  => {
     if(data){
     return res.status(404).json({
       status: false,
-      message: "La commande a déjà été prise par un autre shipper veuillez choisir une autre commande à expédier",
+      message: "Attention! cette commande ne vous est pas affectée",
     });
   }else{
     return res.status(200).json({
