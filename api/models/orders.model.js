@@ -48,7 +48,7 @@ const Orders = function() {
         Orders.isPickedBybarcod = (increment_id,cin, result) => {
           sql.query(`SELECT * FROM sales_flat_order
 		  LEFT JOIN users on users.id = user_erp
-          WHERE sales_flat_order.increment_id = "${increment_id}" and users.cin = "${cin}"`, (err, res) => {
+          WHERE sales_flat_order.increment_id like ("${increment_id}%") and users.cin = "${cin}"`, (err, res) => {
                  if (err) {
                    result(err, null);
                    return err;
