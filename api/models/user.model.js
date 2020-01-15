@@ -64,6 +64,8 @@ const User = function(user) {
       email = "${Username}"
       OR
       phone = "${Username}"
+      OR
+      username = "${Username}"
       `, 
       
       (err, res) => {
