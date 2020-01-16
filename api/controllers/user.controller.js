@@ -196,6 +196,59 @@ exports.checkCin = (req, res) => {
   });
 };
 //------------------------------------------------------------------------------------------------
+
+// changePassword
+exports.changePassword = (req, res) => {
+      
+  User.findUser(req.body.login, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          status: false,
+          message:`Not found User with username ${req.body.login}.`,    
+        });
+      } else {
+        res.status(500).send({
+            status: false,
+            message: "User not found  ",
+        });
+      }
+    } else {
+      
+      bcrypt.compare(req.body.password, data.password, function(erreur, result) {
+        
+        if(result) {
+         // hash password
+         bcrypt.hash(req.body.newPassword, 10, function(err, hash) {
+            if (err) {
+                return res.status(500).json({
+                  status: false,
+                  message:   err
+                });
+              } else {
+                User.updatePassword(hash, req.body.login, (err, data) => {
+                  console.log(hash);
+                return res.status(200).json({
+                  status: true,
+                  message: "Password has been changed sucessfully"
+                });     
+
+                });
+                
+              }
+        });
+
+        } else {
+          return res.status(401).json({
+            status: false,
+            message: "password  is invalide",
+            }); 
+        } 
+      }); 
+    }
+  }); 
+};
+//------------------------------------------------------------------------------------------------
 // check if exist Phone
 exports.checkPhnoe = (req, res) => {
   User.checkPhnoe(req.params.phone, (err, data) => {
