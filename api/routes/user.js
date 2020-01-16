@@ -8,6 +8,7 @@ var mkdirp = require('mkdirp');
 // Create a new User
 router.post("/signup", User.create);
 router.post("/login", User.login);
+router.post("/changePassword", User.changePassword);
 router.post("/profile", User.profile);
 router.get('/checkCin/:cin', User.checkCin);
 router.get("/checkPhnoe/:phone", User.checkPhnoe);

@@ -107,6 +107,29 @@ const User = function(user) {
     });
   };
 
+
+  
+  // Update Password
+  User.updatePassword = (hashPssword, login, result) => {
+    sql.query(`UPDATE users SET password="${hashPssword}" WHERE  
+    cin = "${login}"
+    OR
+    email = "${login}"
+    OR
+    phone = "${login}"
+    OR
+    username = "${login}"`, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+     
+      result(null, true);
+      return;
+    });
+  };
+
   User.imagePath = function(baseUrl, cin, imageType) {
     let imagePath = "./public/uploads/"+cin+"/"+imageType+"-"+cin+".jpg";
     if (fs.existsSync(imagePath)) {
