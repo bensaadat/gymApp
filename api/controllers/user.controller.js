@@ -205,9 +205,7 @@ exports.changePassword = (req, res) => {
       if (err.kind === "not_found") {
         res.status(404).send({
           status: false,
-          message:`Not found User with username ${req.body.login}.`,
-          data: []
-     
+          message:`Not found User with username ${req.body.login}.`,    
         });
       } else {
         res.status(500).send({
@@ -232,7 +230,7 @@ exports.changePassword = (req, res) => {
                   console.log(hash);
                 return res.status(200).json({
                   status: true,
-                  password:   hash
+                  message: "Password has been changed sucessfully"
                 });     
 
                 });
@@ -244,7 +242,6 @@ exports.changePassword = (req, res) => {
           return res.status(401).json({
             status: false,
             message: "password  is invalide",
-            data: []
             }); 
         } 
       }); 
