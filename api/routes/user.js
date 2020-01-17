@@ -10,6 +10,7 @@ router.post("/signup", User.create);
 router.post("/login", User.login);
 router.post("/changePassword", User.changePassword);
 router.post("/profile", User.profile);
+router.post("/forgetPassword", User.forget_Password);
 router.get('/checkCin/:cin', User.checkCin);
 router.get("/checkPhnoe/:phone", User.checkPhnoe);
 router.get("/checkEmail/:email", User.checkEmail);

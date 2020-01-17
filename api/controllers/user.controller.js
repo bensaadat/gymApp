@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const nodemailer = require('nodemailer');
 const  multer = require('multer');
 const nodemailer = require('nodemailer');
 
@@ -285,7 +286,7 @@ exports.checkEmail = (req, res) => {
 //--------------------------------------------------------------------------------------------------
 
 };
-// user profile
+// user profile---------------------------------------------------------------------------------------
 exports.profile = (req, res) => {
   basUrl =  req.protocol + '://' + req.headers.host ;
   User.userObject(basUrl, req.body.cin, (data)  => {
@@ -346,7 +347,6 @@ exports.forget_Password = (req, res) => {
         status: true,
         message: info.response,
       });
-
     }
   });
 };
