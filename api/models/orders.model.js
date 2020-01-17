@@ -59,8 +59,8 @@ const Orders = function() {
                  if (res.length) {
                    // sales_flat_order_status_history table
               sql.query(`INSERT INTO sales_flat_order_status_history 
-              (parent_id, is_customer_notified, is_visible_on_front, status, comment, created_at, entity_name, id_user_erp) 
-              VALUES (${res[0].entity_id}, 0, 0, 'scannedOrder', '<i class="fa fa-barcode" aria-hidden="true"></i>   La commande a été scannée', "${current_date}", 'Shipplo', (select id from users where cin = "${cin}"))`);
+              (parent_id, is_customer_notified, is_visible_on_front, comment, created_at, entity_name, id_user_erp) 
+              VALUES (${res[0].entity_id}, 0, 0, 'La commande a été scannée', "${current_date}", 'Shipplo', (select id from users where cin = "${cin}"))`);
                    result(true);
                    return;
                  }
