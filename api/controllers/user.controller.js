@@ -2,6 +2,8 @@ const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const  multer = require('multer');
+const nodemailer = require('nodemailer');
+
 var mkdirp = require('mkdirp');
 
 //------------------------------------------------------------------------------
@@ -303,6 +305,51 @@ exports.profile = (req, res) => {
   });
 };
 
+// user forget_Password---------------------------------------------------------------------------------------
+exports.forget_Password = (req, res) => {
+  var transporter = nodemailer.createTransport({
+    host: 'localhost',
+    port: 25,
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: '', // generated ethereal user
+        pass: ''  // generated ethereal password
+    },
+    tls:{
+      rejectUnauthorized:false
+    }
+  });
+  // var transporter = nodemailer.createTransport({
+  //   service: 'gmail',
+  //   auth: {
+  //     user: 'bensaadat.amine@gmail.com',
+  //     pass: 'goprotmonegmail'
+  //   }
+  // });
+
+  var mailOptions = {
+    from: 'support@goprot.com',
+    to: 'amine@goprot.com, talha@goprot.com, bensaadat.amine@gmail.com',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        res.status(500).json({
+        status: false,
+        message: error
+      });
+    } else {
+      console.log('Email sent: ' + info.response);
+      return res.status(200).json({
+        status: true,
+        message: info.response,
+      });
+
+    }
+  });
+};
 
 
 
