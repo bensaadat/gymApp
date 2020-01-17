@@ -105,3 +105,4 @@ dist
 
 # Public Folder
 public/
+/api/config/db.config.js
