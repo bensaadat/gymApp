@@ -141,7 +141,7 @@ exports.isPicked = (req, res) => {
 
 // --------- Start Function isPicked -------------------
 exports.isPickedByBarcode = (req, res) => {
-  Orders.isPickedBybarcod( req.body.increment_id,  (data)  => {
+  Orders.isPickedBybarcod( req.body.increment_id, req.body.cin,currentDate(),  (data)  => {
     if(data){
       return res.status(200).json({
         status: true,
