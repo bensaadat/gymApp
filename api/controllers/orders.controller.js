@@ -141,16 +141,25 @@ exports.isPicked = (req, res) => {
 
 // --------- Start Function isPicked -------------------
 exports.isPickedByBarcode = (req, res) => {
-  Orders.isPickedBybarcod( req.body.increment_id, req.body.cin,  (data)  => {
+  Orders.isPickedBybarcod( req.body.increment_id,  (data)  => {
     if(data){
-    return res.status(404).json({
-      status: false,
-      message: "Attention! cette commande ne vous est pas affectée",
-    });
+      return res.status(200).json({
+        status: true,
+        message: "Not Picked"
+      });
   }else{
-    return res.status(200).json({
-      status: true,
-      message: "Not Picked",
+    Orders.isPickedBybarcodeByCIN(req.body.increment_id, req.body.cin, (data1) => {
+      if(data1) {
+        return res.status(200).json({
+          status: true,
+          message: "This is Your Order"
+        });
+      } else {
+        return res.status(404).json({
+          status: false,
+          message: "Attention! cette commande ne vous est pas affectée"
+        });
+      }
     });
   }
 });

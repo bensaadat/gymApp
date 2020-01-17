@@ -45,7 +45,27 @@ const Orders = function() {
          };
 
          // check isPickedBybarcod
-        Orders.isPickedBybarcod = (increment_id,cin, result) => {
+         
+        Orders.isPickedBybarcod = (increment_id, result) => {
+          sql.query(`SELECT * FROM sales_flat_order
+          WHERE increment_id like ("${increment_id}%") and user_erp = 0`, (err, res) => {
+                 if (err) {
+                   result(err, null);
+                   return err;
+                 }
+             // found costomer
+		     console.log("Total Records:- " + res.length);
+
+                 if (res.length) {
+                   result(true);
+                   return;
+                 }
+                 // not found user with the id
+                 result(false);
+           });   
+         };
+
+         Orders.isPickedBybarcodeByCIN = (increment_id,cin, result) => {
           sql.query(`SELECT * FROM sales_flat_order
 		  LEFT JOIN users on users.id = user_erp
           WHERE sales_flat_order.increment_id like ("${increment_id}%") and users.cin = "${cin}"`, (err, res) => {
@@ -56,7 +76,7 @@ const Orders = function() {
              // found costomer
 		     console.log("Total Records:- " + res.length);
 
-                 if (res.length == 0) {
+                 if (res.length) {
                    result(true);
                    return;
                  }
