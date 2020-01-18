@@ -15,7 +15,6 @@ router.get('/checkCin/:cin', User.checkCin);
 router.get("/checkPhnoe/:phone", User.checkPhnoe);
 router.get("/checkEmail/:email", User.checkEmail);
 router.post("/loginjwt", User.loginjwt);
-router.post("/forgetPassword", User.forget_Password);
 // Retrieve all users
 router.get("/", User.findAll);
 
