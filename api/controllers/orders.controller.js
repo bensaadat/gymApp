@@ -27,7 +27,10 @@ exports.FetchOrdes = (req, res) => {
                           gain += 50 ;
                         }
                       });
-                      livre += deliveredOrders[i].amount_ordered
+                      if(deliveredOrders[i].method == "cashondelivery"){
+                        livre += deliveredOrders[i].amount_ordered
+                      }
+                      
                     }
                 }else{
                   gain = 0;
