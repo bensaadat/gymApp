@@ -143,7 +143,7 @@ const User = function(user) {
     User.userObject = function(basUrl, cin, data) {
       
       sql.query(`SELECT ville as city,vehicule as vehicle, start_cmds as  min_orders, first_name, last_name,  email, active,disponibilite,
-      phone, birthday, cin, garantie as deposit,bank_account_title, bank_account_number, bank_name FROM users WHERE cin = "${cin}"`, (err, res) => {
+      phone, birthday, cin, garantie as deposit,bank_account_title, bank_account_number, bank_name, isLocalization FROM users WHERE cin = "${cin}"`, (err, res) => {
         if (err) {
           console.log("error: ", err);
           data(err);
