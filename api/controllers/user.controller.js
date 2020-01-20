@@ -462,6 +462,20 @@ exports.profile = (req, res) => {
  
         // send email
           sendEmail = function(message, to) {
+          
+        	var transporter = nodemailer.createTransport({
+    			host: 'localhost',
+    			port: 25,
+    			secure: false, // true for 465, false for other ports
+    			auth: {
+        			user: '', // generated ethereal user
+        			pass: ''  // generated ethereal password
+    			},
+    			tls:{
+      				rejectUnauthorized:false
+    			}
+  			});
+  
           var mailOptions = {
             from: 'no-reply@goprot.com',
             to: to,
@@ -469,6 +483,7 @@ exports.profile = (req, res) => {
             text: message
           };
           
+
           transporter.sendMail(mailOptions, function(error, info){
             if (error) {
                 res.status(500).json({
