@@ -390,15 +390,16 @@ exports.profile = (req, res) => {
                     phone = replace_first_digit(data.phone),
                     hash = hashMethode(cin),// hash Token_Expire
                     console.log(url+hash);
-                    message = {from: "Shipplo", to : phone, text : url+hash}; // message sms
+		    resetURL = url+hash;
+                    smsObject = {from: "Shipplo", to : phone, text : resetURL}; // message sms
                     // call function send sms
-                    sendSms(message);
-                    console.log(message);
+                    sendSms(smsObject);
+                    
                     console.log(req.headers.host);
                     console.log(data.email);
 
                     if(req.headers.host == "shipplo.goprot.com") {
-                      sendEmail(message,data.email);
+                      sendEmail(resetURL,data.email);
                     }
                     // update in to the database tables column
                     User.updateTokenAndDatime(hash, Token_Expire, cin, (err1, result) => {
@@ -465,7 +466,7 @@ exports.profile = (req, res) => {
         };
  
         // send email
-          sendEmail = function(message, to) {
+          sendEmail = function(resetURL, to) {
           
         	var transporter = nodemailer.createTransport({
     			host: 'localhost',
@@ -479,16 +480,20 @@ exports.profile = (req, res) => {
       				rejectUnauthorized:false
     			}
   			});
-  
+
+		  htmlBody = '<a href="'+resetURL+'">'+resetURL+'</a>';
+  console.log(transporter);
           var mailOptions = {
             from: 'no-reply@goprot.com',
             to: to,
             subject: 'Réinitialisez votre mot de passe shipplo',
-            text: message
+            html: htmlBody
           };
+		  console.log(mailOptions);
           
           transporter.sendMail(mailOptions, function(error, info){
             if (error) {
+		    console.log('Email not sent');
                return false;
             } else {
               console.log('Email sent: ' + info.response);
