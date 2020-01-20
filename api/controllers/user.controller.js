@@ -393,6 +393,10 @@ exports.profile = (req, res) => {
                     message = {from: "Shipplo", to : phone, text : url+hash}; // message sms
                     // call function send sms
                     sendSms(message);
+                    console.log(message);
+                    console.log(req.headers.host);
+                    console.log(data.email);
+
                     if(req.headers.host == "shipplo.goprot.com") {
                       sendEmail(message,data.email);
                     }
@@ -483,19 +487,12 @@ exports.profile = (req, res) => {
             text: message
           };
           
-
           transporter.sendMail(mailOptions, function(error, info){
             if (error) {
-                res.status(500).json({
-                status: false,
-                message: error
-              });
+               return false;
             } else {
               console.log('Email sent: ' + info.response);
-              return res.status(200).json({
-                status: true,
-                message: info.response,
-              });
+              return false;
             }
           });
         };
