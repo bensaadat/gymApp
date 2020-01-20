@@ -58,7 +58,7 @@ const User = function(user) {
     User.findUser = (Username, result) => {
       sql.query(
         `SELECT ville, vehicule, start_cmds, first_name, last_name, 
-          phone, birthday, password, cin, garantie,bank_account_title, bank_account_number, bank_name FROM users WHERE 
+          phone, birthday, password, cin, garantie,bank_account_title, bank_account_number, bank_name, email FROM users WHERE 
         cin = "${Username}"
         OR
         email = "${Username}"
