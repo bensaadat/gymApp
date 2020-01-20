@@ -54,38 +54,7 @@ const User = function(user) {
       result(null, { id: res.insertId, ...newUser });
     });
   };
-  // find user by Username
-    User.findUser = (Username, result) => {
-      sql.query(
-        `SELECT ville, vehicule, start_cmds, first_name, last_name, 
-          phone, birthday, password, cin, garantie,bank_account_title, bank_account_number, bank_name, email FROM users WHERE 
-        cin = "${Username}"
-        OR
-        email = "${Username}"
-        OR
-        phone = "${Username}"
-        OR
-        username = "${Username}"
-        `, 
-        
-        (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-          result(err, null);
-          return;
-        }
-    
-        if (res.length) {
-          console.log("found customer: ", true);
-          result(null, res[0]);
-          return;
-        }
-    
-        // not found Customer with the id
-        result({ kind: "not_found" }, null);
-      });
-    };
-
+  
   // find user by Token
   User.findUserByToken = (forgetPasswordToken, result) => {
     sql.query(
@@ -114,7 +83,7 @@ const User = function(user) {
     User.findUser = (Username, result) => {
       sql.query(
         `SELECT ville, vehicule, start_cmds, first_name, last_name, forgetPasswordToken, forgetPasswordDateTime,
-          phone, birthday, password, cin, garantie,bank_account_title, bank_account_number, bank_name FROM users WHERE 
+          phone, birthday, password, cin, garantie,bank_account_title, bank_account_number, bank_name, email FROM users WHERE 
         cin = "${Username}"
         OR
         email = "${Username}"
