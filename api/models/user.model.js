@@ -54,19 +54,43 @@ const User = function(user) {
       result(null, { id: res.insertId, ...newUser });
     });
   };
-// find user by Username
-  User.findUser = (Username, result) => {
+  // find user by Username
+    User.findUser = (Username, result) => {
+      sql.query(
+        `SELECT ville, vehicule, start_cmds, first_name, last_name, 
+          phone, birthday, password, cin, garantie,bank_account_title, bank_account_number, bank_name FROM users WHERE 
+        cin = "${Username}"
+        OR
+        email = "${Username}"
+        OR
+        phone = "${Username}"
+        OR
+        username = "${Username}"
+        `, 
+        
+        (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+        }
+    
+        if (res.length) {
+          console.log("found customer: ", true);
+          result(null, res[0]);
+          return;
+        }
+    
+        // not found Customer with the id
+        result({ kind: "not_found" }, null);
+      });
+    };
+
+  // find user by Token
+  User.findUserByToken = (forgetPasswordToken, result) => {
     sql.query(
-      `SELECT ville, vehicule, start_cmds, first_name, last_name, 
-        phone, birthday, password, cin, garantie,bank_account_title, bank_account_number, bank_name FROM users WHERE 
-      cin = "${Username}"
-      OR
-      email = "${Username}"
-      OR
-      phone = "${Username}"
-      OR
-      username = "${Username}"
-      `, 
+      `SELECT * FROM users WHERE 
+      forgetPasswordToken = "${forgetPasswordToken}"`, 
       
       (err, res) => {
       if (err) {
@@ -85,6 +109,38 @@ const User = function(user) {
       result({ kind: "not_found" }, null);
     });
   };
+
+    // find user by Username
+    User.findUser = (Username, result) => {
+      sql.query(
+        `SELECT ville, vehicule, start_cmds, first_name, last_name, forgetPasswordToken, forgetPasswordDateTime,
+          phone, birthday, password, cin, garantie,bank_account_title, bank_account_number, bank_name FROM users WHERE 
+        cin = "${Username}"
+        OR
+        email = "${Username}"
+        OR
+        phone = "${Username}"
+        OR
+        username = "${Username}"
+        `, 
+        
+        (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+        }
+    
+        if (res.length) {
+          console.log("found customer: ", true);
+          result(null, res[0]);
+          return;
+        }
+    
+        // not found Customer with the id
+        result({ kind: "not_found" }, null);
+      });
+    };
 
   // Chek if exist CIN
   User.checkCin = (cin, result) => {
@@ -224,6 +280,44 @@ const User = function(user) {
       result(null, res);
     });
   };
+ 
+
+   // get all users
+  //  User.updateTokenAndDatime =  (forgetPasswordToken, forgetPasswordDateTime, cin ,  result) => {
+  //   sql.query(`UPDATE users SET forgetPasswordToken="${forgetPasswordToken}", forgetPasswordDateTime = "${forgetPasswordDateTime}" 
+  //             where cin =  "${cin}"`, (err, res) => {
+  //     if (err) {
+  //       console.log("error: ", err);
+  //       result(null, err);
+  //       return;
+  //     }
+  
+  //     console.log(result);
+  //     result(true);
+  //     return;
+  //   });
+
+  // };
+
+    // Chek if exist Email
+    User.updateTokenAndDatime = (forgetPasswordToken, forgetPasswordDateTime, cin , result) => {
+      sql.query(
+        `UPDATE users SET forgetPasswordToken="${forgetPasswordToken}", forgetPasswordDateTime = "${forgetPasswordDateTime}" 
+        where cin =  "${cin}"`, (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+        }
+    // found costomer
+        if (result.length) {
+          result(null, result[0]);
+          return;
+        }
+        // not found user with the id
+        result(null, false);
+      });
+    };
 
   
 

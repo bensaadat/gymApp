@@ -248,14 +248,43 @@ exports.changePassword = (req, res) => {
     }
   }); 
 } else {
-  console.log(req.body.forgetPasswordToken);
-  console.log(req.body.newPassword);
-  // Update users set password = hashPassword,forgetPasswordToken= "" forgetPasswordDateTime = "" 
-  // where forgetPasswordToken = req.body.forgetPasswordToken
-  return res.status(200).json({
-    status: true,
-    message: "Password has been sucessfully Changed",
-    }); 
+  User.findUserByToken(req.body.forgetPasswordToken, (err, data) => {
+    if (err) {
+      return res.status(404).json({
+        status: false,
+        message: "Password Token is invalid",
+      });
+      
+    } else {
+      var current_time = new Date().getTime() / 1000;
+      var Token_Expire = data.forgetPasswordDateTime;
+      if (Token_Expire > current_time) {
+        bcrypt.hash(req.body.password, 10, function(err, hash) {
+          if (err) {
+              return res.status(500).json({
+                status: false,
+                message:   err
+              });
+            } else {
+              User.updateTokenAndDatime("", "", data.cin, (err1, result) => {
+                User.updatePassword(hash, data.cin, (err, data1) => {
+                  return res.status(200).json({
+                    status: true,
+                    message: "Password has been changed sucessfully"
+                  });     
+                });
+              });    
+            }
+        });
+      }else{
+        return res.status(400).json({
+          status: false,
+          message: "Password Token is Expired"
+        });
+      }
+     
+    }
+  });
 }
 };
 //------------------------------------------------------------------------------------------------
@@ -312,64 +341,102 @@ exports.profile = (req, res) => {
   
   });
 };
-
-// user forget_Password---------------------------------------------------------------------------------------
-exports.forget_Password = (req, res) => {
-  // check if autorize
-  User.findUser(req.body.username, (err, data) => {
-    if (err) {
-      return res.status(404).json({
-        status: false,
-        message: "No autorized",
-      });
+       // user resetPassword---------------------------------------------------------------------------------------
+       exports.resetPassword = (req, res) => {
+           // check if autorize
+           User.findUserByToken(req.body.forgetPasswordToken, (err, data) => {
+            if (err) {
+              return res.status(404).json({
+                status: false,
+                message: "Password Token is invalid",
+              });
+              
+            } else {
+              var current_time = new Date().getTime() / 1000;
+              var Token_Expire = data.forgetPasswordDateTime;
+              if (Token_Expire > current_time) {
+                return res.status(200).json({
+                  status: true,
+                  message: "Password Token is Valid"
+                });
+              }else{
+                return res.status(400).json({
+                  status: false,
+                  message: "Password Token is Expired"
+                });
+              }
+             
+            }
+          });
+        };
       
-    } else {
-      // if User id autorize
-        // generate the URl with forgetPasswordToken
-        var current_time = new Date().getTime() / 1000,
-            Token_Expire = current_time + 7200000 ,
-            url = req.protocol + '://' + req.headers.host ; "/reset_password/"+Token_Expire;
-            hash = hashMethode(Token_Expire),// hash Token_Expire
-            message = {from: "InfoSMS", to : "+212624681853", text : url+"?"+hash}; // message sms
-            // call function send sms
-            sendSms(message);
-        if (current_time > Token_Expire) {
-          console.log("Expired!")
+      // user forget_Password---------------------------------------------------------------------------------------
+          exports.forget_Password = (req, res) => {
+          // check if autorize
+          User.findUser(req.body.username, (err, data) => {
+            if (err) {
+              return res.status(404).json({
+                status: false,
+                message: "No autorized",
+              });
+              
+            } else {
+              // if User id autorize
+                // generate the URl with forgetPasswordToken
+                var current_time = new Date().getTime() / 1000,
+                    Token_Expire = current_time + 7200000 ,
+                    url = req.protocol + '://' + req.headers.host+"/user/reset_password/" ;
+                    cin = data.cin,
+                    phone = replace_first_digit(data.phone),
+                    hash = hashMethode(cin),// hash Token_Expire
+                    console.log(url+hash);
+                    message = {from: "Shipplo", to : phone, text : url+hash}; // message sms
+                    // call function send sms
+                    sendSms(message);
+                    if(req.headers.host == "shipplo.goprot.com") {
+                      sendEmail(message,data.email);
+                    }
+                    // update in to the database tables column
+                    User.updateTokenAndDatime(hash, Token_Expire, cin, (err1, result) => {
+                      if (err1) {
+                        return res.status(500).json({
+                          status: false,
+                          message: err1
+                        });
+                      }else{
+                        console.log(phone);
+                        return res.status(200).json({
+                          status: true,
+                          message: 'data updated',
+                        });
+                      }
+                    });    
+            }
+          });
+
+
+        // ---------- Function replace_first_digit ---------------------
+        function replace_first_digit(input_str) {
+          return input_str.replace(/[0-9]/, '+212');
         }
-        // update in to the database tables column
 
-    
-            // respense value
-            return res.status(200).json({
-                    status: true,
-                    message: "autorized",
-                    Token_Expire,
-                    current_time,
-                    url,
+          // ---------- Function sendSms ---------------------
+        sendSms = function(message) {
+            var infobip = require('infobip');
+            //Initialize the client
+            var client = new infobip.Infobip('amine.goprot', 'Monegmail1');
+            //Send an SMS
+            client.SMS.send(message,function(err, response){
+              if(err){
+                return false;
+              }else{
+                return true
+              }
             });
-    }
-  });
-
-
-        
-      // ---------- Function sendSms ---------------------
-      sendSms = function(message) {
-        var infobip = require('infobip');
-        //Initialize the client
-        var client = new infobip.Infobip('amine.goprot', 'Monegmail1');
-        //Send an SMS
-        client.SMS.send(message,function(err, response){
-          if(err){
-            return false;
-          }else{
-            return true
           }
-        });
-      }
 
          // ---------- Function hashMethode ---------------------
         hashMethode = function(string) {
-          //(generate a salt and hash on separate function calls):
           const saltRounds = 10;
           var salt = bcrypt.genSaltSync(saltRounds);
           var hash = bcrypt.hashSync(""+string+"", salt);
@@ -377,45 +444,46 @@ exports.forget_Password = (req, res) => {
         return hash;
         }
 
-  // Generate resetPassword URL http://localhost:3000/user/reser_password/[forgetPasswordToken] with forgetPasswordToken and send email and sms to user
-  // update user table with forgetPassswordToken and forgetPasswordDateTime
+         // ---------- Function compare hash ---------------------
+         compareMethode = function(hash) {
 
+          bcrypt.compare(guess, stored_hash, function(err, res) {
+            
 
-  // var transporter = nodemailer.createTransport({
-  //   host: 'localhost',
-  //   port: 25,
-  //   secure: false, // true for 465, false for other ports
-  //   auth: {
-  //       user: '', // generated ethereal user
-  //       pass: ''  // generated ethereal password
-  //   },
-  //   tls:{
-  //     rejectUnauthorized:false
-  //   }
-  // });
+          });
 
-  // var mailOptions = {
-  //   from: 'support@goprot.com',
-  //   to: 'amine@goprot.com, talha@goprot.com, bensaadat.amine@gmail.com',
-  //   subject: 'Sending Email using Node.js',
-  //   text: 'That was easy!'
-  // };
-
-  // transporter.sendMail(mailOptions, function(error, info){
-  //   if (error) {
-  //       res.status(500).json({
-  //       status: false,
-  //       message: error
-  //     });
-  //   } else {
-  //     console.log('Email sent: ' + info.response);
-  //     return res.status(200).json({
-  //       status: true,
-  //       message: info.response,
-  //     });
-  //   }
-  // });
-};
+          const saltRounds = 10;
+          var salt = bcrypt.genSaltSync(saltRounds);
+          var hash = bcrypt.hashSync(""+string+"", salt);
+     
+        return hash;
+          }
+        };
+ 
+        // send email
+          sendEmail = function(message, to) {
+          var mailOptions = {
+            from: 'no-reply@goprot.com',
+            to: to,
+            subject: 'Réinitialisez votre mot de passe shipplo',
+            text: message
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                res.status(500).json({
+                status: false,
+                message: error
+              });
+            } else {
+              console.log('Email sent: ' + info.response);
+              return res.status(200).json({
+                status: true,
+                message: info.response,
+              });
+            }
+          });
+        };
 
 // user reset_Password http://localhost:3000/user/reser_password/[forgetPasswordToken]
 // exports.reset_Password = (req, res) => {
