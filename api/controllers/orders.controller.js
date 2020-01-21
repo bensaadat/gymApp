@@ -29,6 +29,7 @@ exports.FetchOrdes = (req, res) => {
                       });
                       if(deliveredOrders[i].method == "cashondelivery"){
                         livre += deliveredOrders[i].amount_ordered
+                        
                       }
                       
                     }
@@ -42,7 +43,7 @@ exports.FetchOrdes = (req, res) => {
                         status: true,
                         message: "Success  Autorisation",
                         data : {
-                          "livre": livre + " DH",
+                          "livre": Number((livre).toFixed(1)) + " DH",
                           "gain" : gain +" DH",
                           "bonus": data.bonus,
                           "collect": {
