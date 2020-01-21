@@ -196,6 +196,25 @@ const User = function(user) {
       });
     };
  
+  // Chek availability
+  User.availability = (cin, result) => {
+    sql.query(
+      `SELECT disponibilite FROM users WHERE cin = "${cin}"`, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+  // found costomer
+      if (res.length) {
+        result(null, res[0]['disponibilite']);
+        return;
+      }
+      // not found user with the id
+      result(null, false);
+    });
+  };
+
   // Chek if exist Phone
   User.checkPhnoe = (phone, result) => {
     sql.query(
@@ -215,6 +234,7 @@ const User = function(user) {
       result(null, false);
     });
   };
+
 
    // Chek if exist Email
    User.checkEmail = (email, result) => {
@@ -251,22 +271,22 @@ const User = function(user) {
   };
  
 
-   // get all users
-  //  User.updateTokenAndDatime =  (forgetPasswordToken, forgetPasswordDateTime, cin ,  result) => {
-  //   sql.query(`UPDATE users SET forgetPasswordToken="${forgetPasswordToken}", forgetPasswordDateTime = "${forgetPasswordDateTime}" 
-  //             where cin =  "${cin}"`, (err, res) => {
-  //     if (err) {
-  //       console.log("error: ", err);
-  //       result(null, err);
-  //       return;
-  //     }
-  
-  //     console.log(result);
-  //     result(true);
-  //     return;
-  //   });
+   // save availability
+   User.saveAvailability =  ( cin, availability , result) => {
+    sql.query(`UPDATE users SET disponibilite="${availability}"
+              where cin =  "${cin}"`, (err) => {
+      if (err) {
+        console.log("error: ", err);
+        result( err);
+        return;
+      }else{
+        result(true);
+        return;
+      }
+     
+    });
 
-  // };
+   };
 
     // Chek if exist Email
     User.updateTokenAndDatime = (forgetPasswordToken, forgetPasswordDateTime, cin , result) => {

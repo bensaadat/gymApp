@@ -341,6 +341,7 @@ exports.profile = (req, res) => {
   
   });
 };
+
        // user resetPassword---------------------------------------------------------------------------------------
        exports.resetPassword = (req, res) => {
            // check if autorize
@@ -369,6 +370,41 @@ exports.profile = (req, res) => {
             }
           });
         };
+
+    
+        
+    // user availability---------------------------------------------------------------------------------------
+       exports.availability = (req, res) => {
+        // check availability 
+        User.availability(req.body.cin, (err, data) => {
+         if (err) {
+           return res.status(404).json({
+             status: false,
+             message: err
+           });
+           
+         } else {
+          return res.status(200).json({
+            status: true,
+            availability: data,
+          });
+          
+         }
+       });
+     };
+      
+     //user save availability---------------------------------------------------------------------------------------
+       exports.saveAvailability = (req, res) => {
+        // check availability 
+        User.saveAvailability(req.body.cin, req.body.availability, (data) => {
+         if (data) {
+          return res.status(200).json({
+            status: true,
+            message: "data Updated",
+          });
+         }
+       });
+     };
       
       // user forget_Password---------------------------------------------------------------------------------------
           exports.forget_Password = (req, res) => {

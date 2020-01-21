@@ -10,6 +10,8 @@ router.post("/signup", User.create);
 router.post("/login", User.login);
 router.post("/changePassword", User.changePassword);
 router.post("/profile", User.profile);
+router.post("/availability", User.availability);
+router.post("/saveAvailability", User.saveAvailability);
 router.post("/forgetPassword", User.forget_Password);
 router.post("/resetPassword", User.resetPassword);
 router.get('/checkCin/:cin', User.checkCin);
