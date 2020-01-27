@@ -170,7 +170,7 @@ const Orders = function() {
         JOIN sales_flat_order_payment ON sales_flat_order_payment.parent_id = sales_flat_order.entity_id
         WHERE sales_flat_order_address.address_type = "shipping" 
         AND sales_flat_order.status IN(${status})
-        AND statut_erp IN(${statut_erp} ) 
+        AND statut_erp IN(${statut_erp}) 
         AND sales_flat_order.user_erp = ${delivery_man} `, (err, res) => {
                if (err) {
                  result(err, null);
@@ -181,6 +181,72 @@ const Orders = function() {
                 const object = {...res,  nbr_orders: res.length }
                 //console.log(res);
                  result(res, res.length);
+                 return;
+               }
+               // not found user with the id
+               result(null, 0);
+         });   
+       };
+
+       Orders.getTotalOrdersCount = (statut_erp, status, delivery_man, result) => {
+        collect =  sql.query(`SELECT count(*) AS totalCount
+        FROM sales_flat_order  
+        JOIN sales_flat_order_address 
+        ON sales_flat_order_address.parent_id = sales_flat_order.entity_id 
+        JOIN sales_flat_shipment_track ON sales_flat_shipment_track.order_id = sales_flat_order.entity_id 
+        JOIN sales_flat_order_payment ON sales_flat_order_payment.parent_id = sales_flat_order.entity_id
+        WHERE sales_flat_order_address.address_type = "shipping" 
+        AND sales_flat_order.status IN(${status})
+        AND statut_erp IN(${statut_erp}) 
+        AND sales_flat_order.user_erp = ${delivery_man}`, (err, res) => {
+               if (err) {
+                 result(0);
+                 return err;
+               }
+           // if ound orders
+               if (res.length) {
+                   result(res);
+                 return;
+               }
+               // not found user with the id
+               result(0);
+         });   
+      };
+
+       Orders.getOrdersByPagging = (statut_erp, status, delivery_man, startLimit, endLimit, result) => {
+        //console.log(delivered(1,2));
+       collect =  sql.query(`SELECT sales_flat_order.entity_id, 
+       sales_flat_order_address.firstname,
+        sales_flat_order_address.firstname, 
+        sales_flat_order_address.lastname, 
+        sales_flat_order_address.city, 
+        sales_flat_order_payment.method, 
+        sales_flat_order_address.street, 
+        sales_flat_order_address.telephone, 
+        sales_flat_order_payment.amount_ordered, 
+        sales_flat_order.weight, 
+        sales_flat_order.commentaire, 
+        sales_flat_shipment_track.track_number,
+        sales_flat_order_address.latitude,
+        sales_flat_order_address.longitude,
+        sales_flat_order.date_statut_erp
+        FROM sales_flat_order  
+        JOIN sales_flat_order_address 
+        ON sales_flat_order_address.parent_id = sales_flat_order.entity_id 
+        JOIN sales_flat_shipment_track ON sales_flat_shipment_track.order_id = sales_flat_order.entity_id 
+        JOIN sales_flat_order_payment ON sales_flat_order_payment.parent_id = sales_flat_order.entity_id
+        WHERE sales_flat_order_address.address_type = "shipping" 
+        AND sales_flat_order.status IN(${status})
+        AND statut_erp IN(${statut_erp}) 
+        AND sales_flat_order.user_erp = ${delivery_man}
+        Limit ${startLimit},${endLimit}  `, (err, res) => {
+               if (err) {
+                 result(err, null);
+                 return err;
+               }
+           // if ound orders
+               if (res.length) {
+                   result(res, res.length);
                  return;
                }
                // not found user with the id
