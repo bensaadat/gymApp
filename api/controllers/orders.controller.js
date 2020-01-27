@@ -124,8 +124,8 @@ exports.FetchOrdersByPagging = (req, res) => {
                     "totalOrders" : totalOrdersCount
                   }
                 });
-              }
-            }
+              });
+            });
           break;
           case 'inDelivery': 
             Orders.getTotalOrdersCount(6, '"processing"', data.shipperId,(totalOrdersCount) => {
@@ -143,8 +143,8 @@ exports.FetchOrdersByPagging = (req, res) => {
                     "totalOrders" : totalOrdersCount
                   }
                 });
-              }
-            }
+              });
+            });
           break;
           case 'delivered': 
             Orders.getOrdersByPagging(2, '"complete"', data.shipperId, offset, limit,(orders, ordersCount) => {
@@ -161,7 +161,7 @@ exports.FetchOrdersByPagging = (req, res) => {
                     "totalOrders" : totalOrdersCount
                 }
               });
-            }
+            });
           break;
           case 'error': 
             Orders.getTotalOrdersCount("4,8", '"tentative", "erreur"', data.shipperId,(totalOrdersCount) => {
@@ -179,11 +179,11 @@ exports.FetchOrdersByPagging = (req, res) => {
                     "totalOrders" : totalOrdersCount
                   }
                 });
-              }
-            }
+              });
+            });
           break;
         }
-      }
+      });
     }
   });
 };
