@@ -73,6 +73,122 @@ exports.FetchOrdes = (req, res) => {
 };
 // --------- End Function FetchOrdes -------------------
 
+// --------- Start Function FetchOrdesByPagging -----------------
+exports.FetchOrdersByPagging = (req, res) => {
+  // check if user autorized
+  Orders.authorized(req.body.cin,  (data)  => {
+    if(data == false){
+      return res.status(404).json({
+        status: false,
+        message: "No Autorisation",
+        data: []
+      });
+    }else{
+      // call function getOrdersByPagging
+      let limit = 20;
+      let offset = req.body.offset;
+      Orders.ListOrdes(2, '"complete"', data.shipperId,(totalDeliveredOrders, totalDeliveredCount) => { 
+        if(totalDeliveredCount > 0){
+          gain = 0;
+          livre = 0;
+            for (var i = 0; i < totalDeliveredOrders.length; i++) {
+              Orders.calculate_gain(totalDeliveredOrders[i].city, data.group_id, (d1)  => {
+                if(d1.length > 0){
+                  gain += d1[0].tarif;   
+                } else {
+                  gain += 50 ;
+                }
+              });
+              if(totalDeliveredOrders[i].method == "cashondelivery"){
+                livre += totalDeliveredOrders[i].amount_ordered
+              }
+            }
+        }else{
+          gain = 0;
+          livre = 0;
+        }
+        switch (req.body.mode) {
+          case 'collect': 
+            Orders.getTotalOrdersCount(5, '"processing"', 0,(totalOrdersCount) => {
+              Orders.getOrdersByPagging(5, '"processing"', 0, offset, limit,(orders, ordersCount) => {
+                return res.status(200).json({
+                  status: true,
+                  message: "Success  Autorisation",
+                  data : {
+                    "livre": Number((livre).toFixed(1)) + " DH",
+                    "gain" : gain +" DH",
+                    "bonus": data.bonus,
+                    "ordersMode" : req.body.mode,
+                    "orders" : orders,
+                    "ordersReturned" : ordersCount,
+                    "totalOrders" : totalOrdersCount
+                  }
+                });
+              }
+            }
+          break;
+          case 'inDelivery': 
+            Orders.getTotalOrdersCount(6, '"processing"', data.shipperId,(totalOrdersCount) => {
+              Orders.getOrdersByPagging(6, '"processing"', data.shipperId, offset, limit,(orders, ordersCount) => {
+                return res.status(200).json({
+                  status: true,
+                  message: "Success  Autorisation",
+                  data : {
+                    "livre": Number((livre).toFixed(1)) + " DH",
+                    "gain" : gain +" DH",
+                    "bonus": data.bonus,
+                    "ordersMode" : req.body.mode,
+                    "orders" : orders,
+                    "ordersReturned" : ordersCount,
+                    "totalOrders" : totalOrdersCount
+                  }
+                });
+              }
+            }
+          break;
+          case 'delivered': 
+            Orders.getOrdersByPagging(2, '"complete"', data.shipperId, offset, limit,(orders, ordersCount) => {
+              return res.status(200).json({
+                status: true,
+                message: "Success  Autorisation",
+                data : {
+                    "livre": Number((livre).toFixed(1)) + " DH",
+                    "gain" : gain +" DH",
+                    "bonus": data.bonus,
+                    "ordersMode" : req.body.mode,
+                    "orders" : orders,
+                    "ordersReturned" : ordersCount,
+                    "totalOrders" : totalOrdersCount
+                }
+              });
+            }
+          break;
+          case 'error': 
+            Orders.getTotalOrdersCount("4,8", '"tentative", "erreur"', data.shipperId,(totalOrdersCount) => {
+              Orders.getOrdersByPagging("4,8", '"tentative", "erreur"', data.shipperId, offset, limit,(orders, ordersCount) => {
+                return res.status(200).json({
+                  status: true,
+                  message: "Success  Autorisation",
+                  data : {
+                    "livre": Number((livre).toFixed(1)) + " DH",
+                    "gain" : gain +" DH",
+                    "bonus": data.bonus,
+                    "ordersMode" : req.body.mode,
+                    "orders" : orders,
+                    "ordersReturned" : ordersCount,
+                    "totalOrders" : totalOrdersCount
+                  }
+                });
+              }
+            }
+          break;
+        }
+      }
+    }
+  });
+};
+// --------- End Function FetchOrdesByPagging -------------------
+
 
 // --------- Start Function OrderDetail ----------------
 exports.OrderDetail = (req, res) => {
