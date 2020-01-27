@@ -205,7 +205,7 @@ const Orders = function() {
                }
            // if ound orders
                if (res.length) {
-                   result(res);
+                   result(res[0].totalCount);
                  return;
                }
                // not found user with the id
