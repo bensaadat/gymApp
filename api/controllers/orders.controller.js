@@ -156,7 +156,7 @@ exports.FetchOrdersByPagging = (req, res) => {
                     "gain" : gain +" DH",
                     "bonus": data.bonus,
                     "ordersMode" : req.body.mode,
-                    "totalOrders" : totalOrdersCount,
+                    "totalOrders" : totalDeliveredCount,
                     "ordersReturned" : ordersCount,
                     "orders" : orders
                 }
