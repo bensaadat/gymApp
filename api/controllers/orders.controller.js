@@ -119,9 +119,9 @@ exports.FetchOrdersByPagging = (req, res) => {
                     "gain" : gain +" DH",
                     "bonus": data.bonus,
                     "ordersMode" : req.body.mode,
-                    "orders" : orders,
+                    "totalOrders" : totalOrdersCount,
                     "ordersReturned" : ordersCount,
-                    "totalOrders" : totalOrdersCount
+                    "orders" : orders
                   }
                 });
               });
@@ -138,9 +138,9 @@ exports.FetchOrdersByPagging = (req, res) => {
                     "gain" : gain +" DH",
                     "bonus": data.bonus,
                     "ordersMode" : req.body.mode,
-                    "orders" : orders,
+                    "totalOrders" : totalOrdersCount,
                     "ordersReturned" : ordersCount,
-                    "totalOrders" : totalOrdersCount
+                    "orders" : orders
                   }
                 });
               });
@@ -156,9 +156,9 @@ exports.FetchOrdersByPagging = (req, res) => {
                     "gain" : gain +" DH",
                     "bonus": data.bonus,
                     "ordersMode" : req.body.mode,
-                    "orders" : orders,
+                    "totalOrders" : totalOrdersCount,
                     "ordersReturned" : ordersCount,
-                    "totalOrders" : totalOrdersCount
+                    "orders" : orders
                 }
               });
             });
@@ -174,9 +174,9 @@ exports.FetchOrdersByPagging = (req, res) => {
                     "gain" : gain +" DH",
                     "bonus": data.bonus,
                     "ordersMode" : req.body.mode,
-                    "orders" : orders,
+                    "totalOrders" : totalOrdersCount,
                     "ordersReturned" : ordersCount,
-                    "totalOrders" : totalOrdersCount
+                    "orders" : orders
                   }
                 });
               });
