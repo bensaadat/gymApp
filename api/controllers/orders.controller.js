@@ -109,75 +109,105 @@ exports.FetchOrdersByPagging = (req, res) => {
         }
         switch (req.body.mode) {
           case 'collect': 
-            Orders.getTotalOrdersCount(5, '"processing"', 0,(totalOrdersCount) => {
+            Orders.getTotalOrdersCount(5, '"processing"', 0,(totalCollectOrdersCount) => {
               Orders.getOrdersByPagging(5, '"processing"', 0, offset, limit,(orders, ordersCount) => {
-                return res.status(200).json({
-                  status: true,
-                  message: "Success  Autorisation",
-                  data : {
-                    "livre": Number((livre).toFixed(1)) + " DH",
-                    "gain" : gain +" DH",
-                    "bonus": data.bonus,
-                    "ordersMode" : req.body.mode,
-                    "totalOrders" : totalOrdersCount,
-                    "ordersReturned" : ordersCount,
-                    "orders" : orders
-                  }
+                Orders.getTotalOrdersCount(6, '"processing"', data.shipperId,(totalInDeliveryOrdersCount) => {
+                  Orders.getTotalOrdersCount("4,8", '"tentative", "erreur"', data.shipperId,(totalErrorOrdersCount) => {
+                    return res.status(200).json({
+                      status: true,
+                      message: "Success  Autorisation",
+                      data : {
+                        "livre": Number((livre).toFixed(1)) + " DH",
+                        "gain" : gain +" DH",
+                        "bonus": data.bonus,
+                        "collectCount" : totalCollectOrdersCount,
+                        "inDeliveryCount" : totalInDeliveryOrdersCount,
+                        "deliveredCount" : totalDeliveredCount,
+                        "errorCount" : totalErrorOrdersCount,
+                        "ordersMode" : req.body.mode,
+                        "ordersReturned" : ordersCount,
+                        "orders" : orders
+                      }
+                    });
+                  });
                 });
               });
             });
           break;
           case 'inDelivery': 
-            Orders.getTotalOrdersCount(6, '"processing"', data.shipperId,(totalOrdersCount) => {
+            Orders.getTotalOrdersCount(6, '"processing"', data.shipperId,(totalInDeliveryOrdersCount) => {
               Orders.getOrdersByPagging(6, '"processing"', data.shipperId, offset, limit,(orders, ordersCount) => {
-                return res.status(200).json({
-                  status: true,
-                  message: "Success  Autorisation",
-                  data : {
-                    "livre": Number((livre).toFixed(1)) + " DH",
-                    "gain" : gain +" DH",
-                    "bonus": data.bonus,
-                    "ordersMode" : req.body.mode,
-                    "totalOrders" : totalOrdersCount,
-                    "ordersReturned" : ordersCount,
-                    "orders" : orders
-                  }
+                Orders.getTotalOrdersCount(5, '"processing"', 0,(totalCollectOrdersCount) => {
+                  Orders.getTotalOrdersCount("4,8", '"tentative", "erreur"', data.shipperId,(totalErrorOrdersCount) => {
+                    return res.status(200).json({
+                      status: true,
+                      message: "Success  Autorisation",
+                      data : {
+                        "livre": Number((livre).toFixed(1)) + " DH",
+                        "gain" : gain +" DH",
+                        "bonus": data.bonus,
+                        "collectCount" : totalCollectOrdersCount,
+                        "inDeliveryCount" : totalInDeliveryOrdersCount,
+                        "deliveredCount" : totalDeliveredCount,
+                        "errorCount" : totalErrorOrdersCount,
+                        "ordersMode" : req.body.mode,
+                        "ordersReturned" : ordersCount,
+                        "orders" : orders
+                      }
+                    });
+                  });
                 });
               });
             });
           break;
           case 'delivered': 
             Orders.getOrdersByPagging(2, '"complete"', data.shipperId, offset, limit,(orders, ordersCount) => {
-              return res.status(200).json({
-                status: true,
-                message: "Success  Autorisation",
-                data : {
-                    "livre": Number((livre).toFixed(1)) + " DH",
-                    "gain" : gain +" DH",
-                    "bonus": data.bonus,
-                    "ordersMode" : req.body.mode,
-                    "totalOrders" : totalDeliveredCount,
-                    "ordersReturned" : ordersCount,
-                    "orders" : orders
-                }
+              Orders.getTotalOrdersCount(5, '"processing"', 0,(totalCollectOrdersCount) => {
+                Orders.getTotalOrdersCount(6, '"processing"', data.shipperId,(totalInDeliveryOrdersCount) => {
+                  Orders.getTotalOrdersCount("4,8", '"tentative", "erreur"', data.shipperId,(totalErrorOrdersCount) => {
+                    return res.status(200).json({
+                      status: true,
+                      message: "Success  Autorisation",
+                      data : {
+                        "livre": Number((livre).toFixed(1)) + " DH",
+                        "gain" : gain +" DH",
+                        "bonus": data.bonus,
+                        "collectCount" : totalCollectOrdersCount,
+                        "inDeliveryCount" : totalInDeliveryOrdersCount,
+                        "deliveredCount" : totalDeliveredCount,
+                        "errorCount" : totalErrorOrdersCount,
+                        "ordersMode" : req.body.mode,
+                        "ordersReturned" : ordersCount,
+                        "orders" : orders
+                      }
+                    });
+                  });
+                });
               });
             });
           break;
           case 'error': 
-            Orders.getTotalOrdersCount("4,8", '"tentative", "erreur"', data.shipperId,(totalOrdersCount) => {
+            Orders.getTotalOrdersCount("4,8", '"tentative", "erreur"', data.shipperId,(totalErrorOrdersCount) => {
               Orders.getOrdersByPagging("4,8", '"tentative", "erreur"', data.shipperId, offset, limit,(orders, ordersCount) => {
-                return res.status(200).json({
-                  status: true,
-                  message: "Success  Autorisation",
-                  data : {
-                    "livre": Number((livre).toFixed(1)) + " DH",
-                    "gain" : gain +" DH",
-                    "bonus": data.bonus,
-                    "ordersMode" : req.body.mode,
-                    "totalOrders" : totalOrdersCount,
-                    "ordersReturned" : ordersCount,
-                    "orders" : orders
-                  }
+                Orders.getTotalOrdersCount(5, '"processing"', 0,(totalCollectOrdersCount) => {
+                  Orders.getTotalOrdersCount(6, '"processing"', data.shipperId,(totalInDeliveryOrdersCount) => {
+                    return res.status(200).json({
+                      status: true,
+                      message: "Success  Autorisation",
+                      data : {
+                        "livre": Number((livre).toFixed(1)) + " DH",
+                        "gain" : gain +" DH",
+                        "bonus": data.bonus,
+                        "collectCount" : totalCollectOrdersCount,
+                        "inDeliveryCount" : totalInDeliveryOrdersCount,
+                        "deliveredCount" : totalDeliveredCount,
+                        "errorCount" : totalErrorOrdersCount,
+                        "ordersMode" : req.body.mode,
+                        "ordersReturned" : ordersCount,
+                        "orders" : orders
+                      }
+                    });
+                  });
                 });
               });
             });
