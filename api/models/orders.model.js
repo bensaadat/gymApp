@@ -273,6 +273,7 @@ const Orders = function() {
               sales_flat_shipment_track.track_number,
               sales_flat_order_address.latitude,
               sales_flat_order_address.longitude,
+              sales_flat_order_address.location_type,
               sales_flat_order.date_statut_erp 
               FROM sales_flat_order  
               JOIN sales_flat_order_address 
