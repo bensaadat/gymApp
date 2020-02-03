@@ -489,11 +489,11 @@ exports.addLocation = (req, res) => {
       }else{
         url = 'https://www.goprot.com/trackingNumber?=LY' + req.body.increment_id + 'MA';
         console.log(url);
-        phone = user.replace_first_digit(req.body.phone);
+        phone = replace_first_digit(req.body.phone);
                     console.log(req.body.phone);
 
         smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
-        user.sendSms(smsObject);
+        sendSms(smsObject);
                             console.log(req.body.email);
 
         sendEmail(url, req.body.email);
@@ -520,6 +520,26 @@ exports.addLocation = (req, res) => {
   }
 // --------- End Function Request Customer GeoLocation ----------------
 
+
+        // ---------- Function replace_first_digit ---------------------
+        function replace_first_digit(input_str) {
+          return input_str.replace(/[0-9]/, '+212');
+        }
+
+          // ---------- Function sendSms ---------------------
+        sendSms = function(message) {
+            var infobip = require('infobip');
+            //Initialize the client
+            var client = new infobip.Infobip('amine.goprot', 'Monegmail1');
+            //Send an SMS
+            client.SMS.send(message,function(err, response){
+              if(err){
+                return false;
+              }else{
+                return true
+              }
+            });
+          }
 
         // send email
           sendEmail = function(resetURL, to) {
