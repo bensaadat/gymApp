@@ -493,12 +493,11 @@ exports.addLocation = (req, res) => {
                     console.log(req.body.phone);
 
         Orders.SingleOrdesBybarcode(req.body.increment_id,(orderData, one) => {
-          Orders.addComment( orderData.entity_id, currentDate(), "Shipper has requested Customer Geolocation", req.body.cin, (data)  => {
+          Orders.addComment( orderData.entity_id, currentDate(), "Shipper has requested Customer Geolocation", data.shipperId, (data)  => {
             if(data){
               smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
               sendSms(smsObject);
-              // sendEmail(url, req.body.email);
-              sendEmail(url, "leonlyone@gmail.com");
+              sendEmail(url, req.body.email, "Help Shipplo Shipper to find your address");
             }else{
               return res.status(404).json({
               status: false,
@@ -511,61 +510,3 @@ exports.addLocation = (req, res) => {
     });
   }
 // --------- End Function Request Customer GeoLocation ----------------
-
-
-        // ---------- Function replace_first_digit ---------------------
-        function replace_first_digit(input_str) {
-          return input_str.replace(/[0-9]/, '+212');
-        }
-
-          // ---------- Function sendSms ---------------------
-        sendSms = function(message) {
-            var infobip = require('infobip');
-            //Initialize the client
-            var client = new infobip.Infobip('amine.goprot', 'Monegmail1');
-            //Send an SMS
-            client.SMS.send(message,function(err, response){
-              if(err){
-                return false;
-              }else{
-                return true
-              }
-            });
-          }
-
-        // send email
-          sendEmail = function(resetURL, to) {
-          
-          var transporter = nodemailer.createTransport({
-          host: 'localhost',
-          port: 25,
-          secure: false, // true for 465, false for other ports
-          auth: {
-              user: '', // generated ethereal user
-              pass: ''  // generated ethereal password
-          },
-          tls:{
-              rejectUnauthorized:false
-          }
-        });
-
-      htmlBody = '<a href="'+resetURL+'">'+resetURL+'</a>';
-  console.log(transporter);
-          var mailOptions = {
-            from: 'no-reply@goprot.com',
-            to: to,
-            subject: 'Help Shipplo Shipper to find your address',
-            html: htmlBody
-          };
-      console.log(mailOptions);
-          
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-        console.log('Email not sent');
-               return false;
-            } else {
-              console.log('Email sent: ' + info.response);
-              return false;
-            }
-          });
-        };

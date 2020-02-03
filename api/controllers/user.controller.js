@@ -435,7 +435,7 @@ exports.profile = (req, res) => {
                     console.log(data.email);
 
                     if(req.headers.host == "shipplo.goprot.com") {
-                      sendEmail(resetURL,data.email);
+                      sendEmail(resetURL,data.email, 'Réinitialisez votre mot de passe shipplo');
                     }
                     // update in to the database tables column
                     User.updateTokenAndDatime(hash, Token_Expire, cin, (err1, result) => {
@@ -502,7 +502,7 @@ exports.profile = (req, res) => {
         };
  
         // send email
-          sendEmail = function(resetURL, to) {
+          sendEmail = function(url, to, subject) {
           
         	var transporter = nodemailer.createTransport({
     			host: 'localhost',
@@ -517,12 +517,12 @@ exports.profile = (req, res) => {
     			}
   			});
 
-		  htmlBody = '<a href="'+resetURL+'">'+resetURL+'</a>';
+		  htmlBody = '<a href="'+url+'">'+url+'</a>';
   console.log(transporter);
           var mailOptions = {
             from: 'no-reply@goprot.com',
             to: to,
-            subject: 'Réinitialisez votre mot de passe shipplo',
+            subject: subject,
             html: htmlBody
           };
 		  console.log(mailOptions);
