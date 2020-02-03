@@ -491,13 +491,16 @@ exports.addLocation = (req, res) => {
         console.log(url);
         phone = replace_first_digit(req.body.phone);
                     console.log(req.body.phone);
-
+        smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
+        sendSms(smsObject);
+        sendEmail(url, req.body.email, "Help Shipplo Shipper to find your address");
         Orders.SingleOrdesBybarcode(req.body.increment_id,(orderData, one) => {
           Orders.addComment( orderData.entity_id, currentDate(), "Shipper has requested Customer Geolocation", data.shipperId, (data)  => {
             if(data){
-              smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
-              sendSms(smsObject);
-              sendEmail(url, req.body.email, "Help Shipplo Shipper to find your address");
+                return res.status(200).json({
+                status: true,
+                message: "Customer has been notified",
+                });
             }else{
               return res.status(404).json({
               status: false,
@@ -529,7 +532,7 @@ exports.addLocation = (req, res) => {
             });
           }
 
-          
+
         // send email
           sendEmail = function(url, to, subject) {
           
