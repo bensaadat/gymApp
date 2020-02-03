@@ -497,7 +497,7 @@ exports.addLocation = (req, res) => {
                             console.log(req.body.email);
 
         sendEmail(url, req.body.email);
-                                              console.log(req.body.increment_id;
+                                              console.log(req.body.increment_id);
 
         Orders.SingleOrdesBybarcode(req.body.increment_id,(orderData, one) => {
 
