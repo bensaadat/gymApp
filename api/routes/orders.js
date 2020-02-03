@@ -16,6 +16,7 @@ router.post("/fetechOrderComment", Orders.fetechOrderCommentByShipperId); // fet
 router.post("/addComment", Orders.addComment); // fetechOrderComment
 router.post("/addLocation", Orders.addLocation); // addLocation
 router.post("/fetchOrdersByPagging", Orders.FetchOrdersByPagging); //List all Orders
+router.post("/requestCustomerLocation", Orders.requestCustomerLocation);
 //-------------------------------------------------------------------------------
 
 module.exports = router;

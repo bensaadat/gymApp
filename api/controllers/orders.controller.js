@@ -475,3 +475,76 @@ exports.addLocation = (req, res) => {
   })
 }
 // --------- End Function ftechOrderCommentByShipperId ----------------
+
+// --------- Start Function Request Customer GeoLocation --------------
+  exports.requestCustomerLocation = (req, res) => {
+    Orders.authorized( req.body.cin,  (data)  => {
+      if(data == false){
+        return res.status(404).json({
+        status: false,
+        message: "No Autorisation",
+        data: []
+        });
+      }else{
+        url = 'https://www.goprot.com/trackingNumber?=' + req.body.increment_id;
+        phone = replace_first_digit(req.body.phone),
+        smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
+        user.sendSms(smsObject);
+        sendEmail(url, req.body.email)
+        Orders.SingleOrdesBybarcode(req.body.increment_id,(orderData, one) => {
+          Orders.addComment( orderData.entity_id, currentDate(), "Shipper has requested Customer Geolocation", req.body.cin, (data)  => {
+            if(data){
+              return res.status(200).json({
+              status: true,
+              message: "Customer has been notified",
+              });
+            }else{
+              return res.status(404).json({
+              status: false,
+              message: "Status Not Changed",
+              });
+            }
+          });
+        });
+      }
+    });
+  }
+// --------- End Function Request Customer GeoLocation ----------------
+
+
+        // send email
+          sendEmail = function(resetURL, to) {
+          
+          var transporter = nodemailer.createTransport({
+          host: 'localhost',
+          port: 25,
+          secure: false, // true for 465, false for other ports
+          auth: {
+              user: '', // generated ethereal user
+              pass: ''  // generated ethereal password
+          },
+          tls:{
+              rejectUnauthorized:false
+          }
+        });
+
+      htmlBody = '<a href="'+resetURL+'">'+resetURL+'</a>';
+  console.log(transporter);
+          var mailOptions = {
+            from: 'no-reply@goprot.com',
+            to: to,
+            subject: 'Help Shipplo Shipper to find your address',
+            html: htmlBody
+          };
+      console.log(mailOptions);
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+        console.log('Email not sent');
+               return false;
+            } else {
+              console.log('Email sent: ' + info.response);
+              return false;
+            }
+          });
+        };
