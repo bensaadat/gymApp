@@ -497,8 +497,7 @@ exports.addLocation = (req, res) => {
             if(data){
               smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
               sendSms(smsObject);
-              // sendEmail(url, req.body.email);
-              sendEmail(url, "leonlyone@gmail.com", "Help Shipplo Shipper to find your address");
+              sendEmail(url, req.body.email, "Help Shipplo Shipper to find your address");
             }else{
               return res.status(404).json({
               status: false,
