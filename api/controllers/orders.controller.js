@@ -510,3 +510,8 @@ exports.addLocation = (req, res) => {
     });
   }
 // --------- End Function Request Customer GeoLocation ----------------
+
+        function replace_first_digit(input_str) {
+          return input_str.replace(/[0-9]/, '+212');
+        }
+
