@@ -478,20 +478,29 @@ exports.addLocation = (req, res) => {
 
 // --------- Start Function Request Customer GeoLocation --------------
   exports.requestCustomerLocation = (req, res) => {
+            console.log(req.body.cin);
+
     Orders.authorized( req.body.cin,  (data)  => {
       if(data == false){
         return res.status(404).json({
         status: false,
         message: "No Autorisation",
-        data: []
         });
       }else{
-        url = 'https://www.goprot.com/trackingNumber?=' + req.body.increment_id;
-        phone = replace_first_digit(req.body.phone),
+        url = 'https://www.goprot.com/trackingNumber?=LY' + req.body.increment_id + 'MA';
+        console.log(url);
+        phone = user.replace_first_digit(req.body.phone);
+                    console.log(req.body.phone);
+
         smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
         user.sendSms(smsObject);
-        sendEmail(url, req.body.email)
+                            console.log(req.body.email);
+
+        sendEmail(url, req.body.email);
+                                              console.log(req.body.increment_id;
+
         Orders.SingleOrdesBybarcode(req.body.increment_id,(orderData, one) => {
+
           Orders.addComment( orderData.entity_id, currentDate(), "Shipper has requested Customer Geolocation", req.body.cin, (data)  => {
             if(data){
               return res.status(200).json({
