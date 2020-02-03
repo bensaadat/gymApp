@@ -492,21 +492,13 @@ exports.addLocation = (req, res) => {
         phone = replace_first_digit(req.body.phone);
                     console.log(req.body.phone);
 
-        smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
-        sendSms(smsObject);
-                            console.log(req.body.email);
-
-        sendEmail(url, req.body.email);
-                                              console.log(req.body.increment_id);
-
         Orders.SingleOrdesBybarcode(req.body.increment_id,(orderData, one) => {
-
           Orders.addComment( orderData.entity_id, currentDate(), "Shipper has requested Customer Geolocation", req.body.cin, (data)  => {
             if(data){
-              return res.status(200).json({
-              status: true,
-              message: "Customer has been notified",
-              });
+              smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
+              sendSms(smsObject);
+              // sendEmail(url, req.body.email);
+              sendEmail(url, "leonlyone@gmail.com");
             }else{
               return res.status(404).json({
               status: false,
