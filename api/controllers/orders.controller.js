@@ -487,7 +487,7 @@ exports.addLocation = (req, res) => {
         message: "No Autorisation",
         });
       }else{
-        url = 'https://www.goprot.com/trackingNumber?=LY' + req.body.increment_id + 'MA';
+        url = 'https://www.goprot.com/trackorder.php?trackingNumber=LY' + req.body.increment_id + 'MA';
         console.log(url);
         phone = replace_first_digit(req.body.phone);
                     console.log(req.body.phone);
