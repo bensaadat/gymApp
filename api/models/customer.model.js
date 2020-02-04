@@ -19,7 +19,7 @@ const Customer = function(customer) {
        //sql.query(`UPDATE sales_flat_order SET statut_erp = 6, status = 'processing', date_statut_erp =  "${current_date}", user_erp =  ${shipperId} WHERE entity_id =${order_id}`);
        
        // sales_flat_order_address table
-       sql.query(`UPDATE sales_flat_order_address SET latitude = "${latitude}", longitude = "${longitude}"  WHERE parent_id = "${order_id}"`);
+       sql.query(`UPDATE sales_flat_order_address SET latitude = "${latitude}", longitude = "${longitude}", location_type = 1  WHERE parent_id = "${order_id}"`);
      
         return true;
 
