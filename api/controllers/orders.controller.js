@@ -490,11 +490,11 @@ exports.addLocation = (req, res) => {
         url = 'https://www.goprot.com/trackorder.php?trackingNumber=LY' + req.body.increment_id + 'MA';
         console.log(url);
         phone = replace_first_digit(req.body.phone);
-                    console.log(req.body.phone);
+        console.log(req.body.phone);
         smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
         sendSms(smsObject);
-        sendEmail(url, req.body.email, "Help Shipplo Shipper to find your address");
         Orders.SingleOrdesBybarcode(req.body.increment_id,(orderData, one) => {
+          sendEmail(url, orderData.email, "Help Shipplo Shipper to find your address");
           Orders.addComment( orderData.entity_id, currentDate(), "Shipper has requested Customer Geolocation", data.shipperId, (data)  => {
             if(data){
                 return res.status(200).json({
