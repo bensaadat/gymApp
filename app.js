@@ -7,6 +7,7 @@ const upload = multer();
 
 const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/user');
+const customerRoutes = require('./api/routes/customer');
 
 app.use(morgan('dev'));
 app.use(bodyparser.urlencoded({extended: true}));
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
 // Routes which should handle requests
 app.use('/user', userRoutes);
 app.use('/orders', orderRoutes);
+app.use('/customer', customerRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not found');
