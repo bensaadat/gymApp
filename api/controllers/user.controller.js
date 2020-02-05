@@ -539,61 +539,65 @@ exports.profile = (req, res) => {
         };
 
   
-  // send email 2
-  sendEmail2 = function() {
-          
+exports.sendEmail2 = (req, res) => {
+  // send email 2         
     var transporter = nodemailer.createTransport({
-    host: 'localhost',
-    port: 25,
-    secure: false, // true for 465, false for other ports
-    auth: {
-        user: '', // generated ethereal user
-        pass: ''  // generated ethereal password
-    },
-    tls:{
-        rejectUnauthorized:false
-    }
-  });
+      host: 'localhost',
+      port: 25,
+      secure: false, // true for 465, false for other ports
+      auth: {
+          user: '', // generated ethereal user
+          pass: ''  // generated ethereal password
+      },
+      tls:{
+          rejectUnauthorized:false
+      }
+    });
   
   var readHTMLFile = function(path, callback) {
+    console.log(path);
     fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
         if (err) {
+              console.log(err);
+
             throw err;
             callback(err);
         }
         else {
+              console.log(html);
+
             callback(null, html);
         }
     });
+  };
+
+  readHTMLFile(__dirname + 'views/emailTemplates/emailWithPDF.html', function(err, html) {
+    var template = handlebars.compile(html);
+    var replacements = {
+         username: "John Doe"
+    };
+    var htmlToSend = template(replacements);
+    
+    var mailOptions = {
+      from: 'no-reply@goprot.com',
+      to: "bensaadat.amine@gmail.com",
+      subject: "Test Email",
+      html: htmlToSend
+    };  
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log('Email not sent');
+        return false;
+      } else {
+        console.log('Email sent: ' + info.response);
+        return false;
+      }
+    });
+  });
+
 };
 
-readHTMLFile(__dirname + 'views/emailTemplates/emailWithPDF.html', function(err, html) {
-  var template = handlebars.compile(html);
-  var replacements = {
-       username: "John Doe"
-  };
-  var htmlToSend = template(replacements);
-  
-  var mailOptions = {
-    from: 'no-reply@goprot.com',
-    to: "bensaadat.amine@gmail.com",
-    subject: "Test Email",
-    html: htmlToSend
-  };  
-
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-console.log('Email not sent');
-       return false;
-    } else {
-      console.log('Email sent: ' + info.response);
-      return false;
-    }
-  });
-});
-
-
-  };
 
 
 // user reset_Password http://localhost:3000/user/reser_password/[forgetPasswordToken]
