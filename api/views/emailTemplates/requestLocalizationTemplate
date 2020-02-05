@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Coucou</title>
+  </head>
+ <body style="background: #F0F0F0; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0;">
+    <div style="background: #F0F0F0; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0;">
+        <table cellspacing="0" cellpadding="0" border="0" height="100%" width="100%">
+            <tr>
+                <td align="center" valign="top" style="padding: 20px 0 20px 0">
+                    <table bgcolor="FFFFFF" cellspacing="0" cellpadding="10" border="0" width="650" style="border:6px solid #db1010;">
+                        <tr>
+                            <td valign="top">
+                                <a href="www.goprot.com" style="color:#1E7EC8;">
+                                    <img src="https://ci5.googleusercontent.com/proxy/P7gUN8Kkn0IzteyQ-u6BIWmcZtGHzRs1W_FOzFL4XuTbnMESkr476WBJDRZQREbJmug5mM-A6d1J2rwoPlCcrIJrB6uDkLFhxluFcOECxrzxc5KqNow=s0-d-e1-ft#https://www.goprot.com/media/email/logo/default/signature-email.png" alt="Goprot.com" border="0"/></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <h1 style="font-size: 22px; font-weight: normal; line-height: 22px; margin: 0 0 11px 0;">Bonjour '{{clientname}}',</h1>
+                                <p>Afin que notre livreur puisse livrer votre commande numéro {{trackingNumber}}, nous aurons besoin de votre géolocalisation exacte. Prière de cliquer sur le lien suivant pour nous permettre de transférer votre géolocalisation au livreur.<br/>
+                                <a href="{{url}}" style="color:#1E7EC8;">{{url}}</a> </p>
+                                <p>Votre géolocalisation sera uniquement utilisée pour la livraison et ne sera jamais sujette à tout autre utilisation. Merci de visiter notre site pour en savoir plus sur les conditions d'utilisation.</p>
+<p>Nous vous remercions pour votre fidélité.
+</p>
+<p>L’équipe Shipplo</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #dcdcdc; text-align: center;"><p style="font-size:12px; margin:0; text-align: center;">L'équipe <strong>Goprot.com</strong></p></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
