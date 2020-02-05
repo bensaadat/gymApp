@@ -533,14 +533,17 @@ exports.profile = (req, res) => {
 
     readHTMLFile('./api/views/emailTemplates/emailWithPDF.html', function(err, html) {
 
+    var content = "<p>Il ya eu récemment une demande pour changer le mot de passe pour votre compte.</p>
+                                <p>Si vous avez demandé ce changement de mot de passe, veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe&nbsp;:<br/> <a href=\"{{url}}\" style=\"color:#1E7EC8;\">{{url}}</a></p><br/>
+                                <p>Si en cliquant sur le lien, celui-ci ne fonctionne pas, veuillez copier et coller l'URL dans la barre d'adresse de votre navigateur.</p>
+                                <br />
+                                <p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message et votre mot de passe restera inchangé.</p>"
+    var htmlBody = html.replacements(emailcontent: content);
     var template = handlebars.compile(html);
+
     var replacements = {
          username: firstName+ " " + lastName,
-         emailcontent: "Il ya eu récemment une demande pour changer le mot de passe pour votre compte.
-                                Si vous avez demandé ce changement de mot de passe, veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe&nbsp;:<br/> <a href=\""+ url + "\" style=\"color:#1E7EC8;\">"+ url +"</a><<br/>
-                                Si en cliquant sur le lien, celui-ci ne fonctionne pas, veuillez copier et coller l'URL dans la barre d'adresse de votre navigateur.
-                                <br />
-                                Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message et votre mot de passe restera inchangé."
+         url: url
     };
     var htmlToSend = template(replacements);
     
