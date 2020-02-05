@@ -79,4 +79,7 @@ moveFile('public/uploads/'+imageName, 'public/uploads/'+foldername);
   })
 
 });
+
+
+router.get("/sendEmail2", User.sendEmail2);
 module.exports = router;
