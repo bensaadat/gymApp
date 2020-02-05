@@ -3,7 +3,6 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const User = require("../controllers/user.controller.js");
 const multer = require('multer');
-const fs = require('fs');
 var mkdirp = require('mkdirp');
 
 // Create a new User

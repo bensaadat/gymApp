@@ -436,7 +436,7 @@ exports.profile = (req, res) => {
                     console.log(data.email);
 
                     if(req.headers.host == "shipplo.goprot.com") {
-                      sendEmail(resetURL,data.email, 'Réinitialisez votre mot de passe shipplo');
+                      sendEmail(resetURL,data.email, data.first_name, data.last_name, 'Réinitialisez votre mot de passe shipplo');
                     }
                     // update in to the database tables column
                     User.updateTokenAndDatime(hash, Token_Expire, cin, (err1, result) => {
@@ -503,87 +503,51 @@ exports.profile = (req, res) => {
         };
  
         // send email
-          sendEmail = function(url, to, subject) {
+          sendEmail = function(url, to, firstName, lastName, subject) {
           
-        	var transporter = nodemailer.createTransport({
-    			host: 'localhost',
-    			port: 25,
-    			secure: false, // true for 465, false for other ports
-    			auth: {
-        			user: '', // generated ethereal user
-        			pass: ''  // generated ethereal password
-    			},
-    			tls:{
-      				rejectUnauthorized:false
-    			}
-  			});
+          	var transporter = nodemailer.createTransport({
+        			host: 'localhost',
+        			port: 25,
+        			secure: false, // true for 465, false for other ports
+        			auth: {
+            			user: '', // generated ethereal user
+            			pass: ''  // generated ethereal password
+        			},
+        			tls:{
+          				rejectUnauthorized:false
+        		}
+  			   });
 
-		  htmlBody = '<a href="'+url+'">'+url+'</a>';
-  console.log(transporter);
-          var mailOptions = {
-            from: 'no-reply@goprot.com',
-            to: to,
-            subject: subject,
-            html: htmlBody
-          };
-		  console.log(mailOptions);
-          
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-		    console.log('Email not sent');
-               return false;
-            } else {
-              console.log('Email sent: ' + info.response);
-              return false;
-            }
-          });
-        };
-
-  
-exports.sendEmail2 = (req, res) => {
-  // send email 2         
-    var transporter = nodemailer.createTransport({
-      host: 'localhost',
-      port: 25,
-      secure: false, // true for 465, false for other ports
-      auth: {
-          user: '', // generated ethereal user
-          pass: ''  // generated ethereal password
-      },
-      tls:{
-          rejectUnauthorized:false
-      }
-    });
-  
   var readHTMLFile = function(path, callback) {
     console.log(path);
     fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
         if (err) {
-              console.log(err);
-
             throw err;
             callback(err);
         }
         else {
-              console.log(html);
-
             callback(null, html);
         }
     });
   };
 
-  readHTMLFile('./api/views/emailTemplates/emailWithPDF.html', function(err, html) {
+    readHTMLFile('./api/views/emailTemplates/emailWithPDF.html', function(err, html) {
 
     var template = handlebars.compile(html);
     var replacements = {
-         username: "John Doe"
+         username: firstName+ " " + lastName,
+         EMAIL_CONTENT: '<p>Il ya eu récemment une demande pour changer le mot de passe pour votre compte.</p>
+                                <p>Si vous avez demandé ce changement de mot de passe, veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe&nbsp;:<br/> <a href="'+ url + '" style="color:#1E7EC8;">"'+ url +'"</a></p><br/>
+                                <p>Si en cliquant sur le lien, celui-ci ne fonctionne pas, veuillez copier et coller l\'URL dans la barre d\'adresse de votre navigateur.</p>
+                                <br />
+                                <p>Si vous n\'êtes pas à l\'origine de cette demande, vous pouvez ignorer ce message et votre mot de passe restera inchangé.</p>'
     };
     var htmlToSend = template(replacements);
     
     var mailOptions = {
       from: 'no-reply@goprot.com',
-      to: "bensaadat.amine@gmail.com",
-      subject: "Test Email",
+      to: to,
+      subject: subject,
       html: htmlToSend
     };  
 
@@ -597,10 +561,9 @@ exports.sendEmail2 = (req, res) => {
       }
     });
   });
-
 };
 
-
+  
 
 // user reset_Password http://localhost:3000/user/reser_password/[forgetPasswordToken]
 // exports.reset_Password = (req, res) => {
