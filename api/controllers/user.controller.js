@@ -428,7 +428,8 @@ exports.profile = (req, res) => {
                     hash = hashMethode(cin),// hash Token_Expire
                     console.log(url+hash);
 		                resetURL = url+hash;
-                    smsObject = {from: "Shipplo", to : phone, text : resetURL}; // message sms
+		    smsMessage = "Vous avez demandé à changer le mot de passe de votre compte Shipplo. Pour créer un nouveau mot de passe, cliquez sur le lien: "+ resetURL;
+                    smsObject = {from: "Shipplo", to : phone, text : smsMessage}; // message sms
                     // call function send sms
                     sendSms(smsObject);
                     
