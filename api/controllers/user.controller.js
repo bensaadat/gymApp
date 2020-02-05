@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 const  multer = require('multer');
+const fs = require('fs');
 
 var mkdirp = require('mkdirp');
 
@@ -571,7 +572,8 @@ exports.sendEmail2 = (req, res) => {
     });
   };
 
-  readHTMLFile(__dirname + 'views/emailTemplates/emailWithPDF.html', function(err, html) {
+  readHTMLFile('./api/views/emailTemplates/emailWithPDF.html', function(err, html) {
+
     var template = handlebars.compile(html);
     var replacements = {
          username: "John Doe"
