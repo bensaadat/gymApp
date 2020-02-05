@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 const  multer = require('multer');
 const fs = require('fs');
-
+const handlebars = require('handlebars');
 var mkdirp = require('mkdirp');
 
 //------------------------------------------------------------------------------
