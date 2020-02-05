@@ -491,10 +491,11 @@ exports.addLocation = (req, res) => {
         console.log(url);
         phone = replace_first_digit(req.body.phone);
         console.log(req.body.phone);
-        smsObject = {from: "Shipplo", to : phone, text : url}; // message sms
+        smsMessage = "Merci de cliquer sur le lien "+ url +" pour pouvoir vous géolocaliser et assurer une livraison plus rapide.";
+        smsObject = {from: "Shipplo", to : phone, text : smsMessage}; // message sms
         sendSms(smsObject);
         Orders.SingleOrdesBybarcode(req.body.increment_id,(orderData, one) => {
-          sendEmail(url, orderData.email, "Help Shipplo Shipper to find your address");
+          sendEmail(url, orderData.email, orderData.firstname, orderData.lastname, "LA" + req.body.increment_id + "MA", "Aidez Shipplo à trouver votre adresse");
           Orders.addComment( orderData.entity_id, currentDate(), "Shipper has requested Customer Geolocation", data.shipperId, (data)  => {
             if(data){
                 return res.status(200).json({
@@ -534,7 +535,7 @@ exports.addLocation = (req, res) => {
 
 
         // send email
-          sendEmail = function(url, to, subject) {
+          sendEmail = function(url, to, firstName, lastName, trackingNumber, subject) {
           
           var transporter = nodemailer.createTransport({
           host: 'localhost',
@@ -549,23 +550,44 @@ exports.addLocation = (req, res) => {
           }
         });
 
-      htmlBody = '<a href="'+url+'">'+url+'</a>';
-  console.log(transporter);
-          var mailOptions = {
-            from: 'no-reply@goprot.com',
-            to: to,
-            subject: subject,
-            html: htmlBody
-          };
-      console.log(mailOptions);
-          
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
+          var readHTMLFile = function(path, callback) {
+    console.log(path);
+    fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
+        if (err) {
+            throw err;
+            callback(err);
+        }
+        else {
+            callback(null, html);
+        }
+    });
+  };
+    readHTMLFile('./api/views/emailTemplates/requestLocalizationTemplate.html', function(err, html) {
+
+    var template = handlebars.compile(html);
+    var replacements = {
+         clientname: firstName+ " " + lastName,
+         url: url,
+         trackingNumber: trackingNumber
+    };
+    var htmlToSend = template(replacements);
+    
+    var mailOptions = {
+      from: 'no-reply@goprot.com',
+      to: to,
+      subject: subject,
+      html: htmlToSend
+    };  
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
         console.log('Email not sent');
-               return false;
-            } else {
-              console.log('Email sent: ' + info.response);
-              return false;
-            }
-          });
-        };
+        return false;
+      } else {
+        console.log('Email sent: ' + info.response);
+        return false;
+      }
+    });
+  });
+
+};

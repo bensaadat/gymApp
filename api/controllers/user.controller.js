@@ -532,7 +532,7 @@ exports.profile = (req, res) => {
     });
   };
 
-    readHTMLFile('./api/views/emailTemplates/emailWithPDF.html', function(err, html) {
+    readHTMLFile('./api/views/emailTemplates/forgotPasswordTemplate.html', function(err, html) {
 
     var template = handlebars.compile(html);
     var replacements = {
