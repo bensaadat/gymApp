@@ -567,7 +567,7 @@ exports.profile = (req, res) => {
     });
 };
 
-readHTMLFile(__dirname + 'public/pages/emailWithPDF.html', function(err, html) {
+readHTMLFile(__dirname + 'views/emailTemplates/emailWithPDF.html', function(err, html) {
   var template = handlebars.compile(html);
   var replacements = {
        username: "John Doe"
