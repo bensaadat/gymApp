@@ -536,11 +536,11 @@ exports.profile = (req, res) => {
     var template = handlebars.compile(html);
     var replacements = {
          username: firstName+ " " + lastName,
-         EMAIL_CONTENT: '<p>Il ya eu récemment une demande pour changer le mot de passe pour votre compte.</p>
-                                <p>Si vous avez demandé ce changement de mot de passe, veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe&nbsp;:<br/> <a href="'+ url + '" style="color:#1E7EC8;">"'+ url +'"</a></p><br/>
-                                <p>Si en cliquant sur le lien, celui-ci ne fonctionne pas, veuillez copier et coller l\'URL dans la barre d\'adresse de votre navigateur.</p>
+         EMAIL_CONTENT: "<p>Il ya eu récemment une demande pour changer le mot de passe pour votre compte.</p>
+                                <p>Si vous avez demandé ce changement de mot de passe, veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe&nbsp;:<br/> <a href=\""+ url + "\" style=\"color:#1E7EC8;\">"+ url +"</a></p><br/>
+                                <p>Si en cliquant sur le lien, celui-ci ne fonctionne pas, veuillez copier et coller l'URL dans la barre d'adresse de votre navigateur.</p>
                                 <br />
-                                <p>Si vous n\'êtes pas à l\'origine de cette demande, vous pouvez ignorer ce message et votre mot de passe restera inchangé.</p>'
+                                <p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message et votre mot de passe restera inchangé.</p>"
     };
     var htmlToSend = template(replacements);
     
