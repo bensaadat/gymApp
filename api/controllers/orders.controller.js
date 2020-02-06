@@ -495,7 +495,7 @@ exports.addLocation = (req, res) => {
         smsObject = {from: "Shipplo", to : phone, text : smsMessage}; // message sms
         sendSms(smsObject);
         Orders.SingleOrdesBybarcode(req.body.increment_id,(orderData, one) => {
-          sendEmail(url, orderData.email, orderData.firstname, orderData.lastname, "LA" + req.body.increment_id + "MA", "Aidez Shipplo à trouver votre adresse");
+          sendEmailToCustomer(url, orderData.email, orderData.firstname, orderData.lastname, "LA" + req.body.increment_id + "MA", "Aidez Shipplo à trouver votre adresse");
           Orders.addComment( orderData.entity_id, currentDate(), "Shipper has requested Customer Geolocation", data.shipperId, (data)  => {
             if(data){
                 return res.status(200).json({
@@ -535,7 +535,7 @@ exports.addLocation = (req, res) => {
 
 
         // send email
-          sendEmail = function(url, to, firstName, lastName, trackingNumber, subject) {
+  sendEmailToCustomer = function(url, to, firstName, lastName, trackingNumber, subject) {
           
           var transporter = nodemailer.createTransport({
           host: 'localhost',
