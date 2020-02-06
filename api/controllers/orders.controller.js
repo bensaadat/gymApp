@@ -1,5 +1,7 @@
 const Orders =  require('../models/orders.model'); // call model orders
-
+const nodemailer = require('nodemailer');
+const fs = require('fs');
+const handlebars = require('handlebars');
 
 // --------- Start Function FetchOrdes -----------------
 exports.FetchOrdes = (req, res) => {
