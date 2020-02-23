@@ -120,9 +120,7 @@ var mkdirp = require('mkdirp');
 //--------------------------------------------------------------------------------------------------------------------------------
         // Logine  User without jwt
     exports.login = (req, res, next) => {
-     
-      
-      User.findUser(req.body.username, (err, data) => {
+      User.findUser(req.body.username, (err, user) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({
@@ -138,23 +136,19 @@ var mkdirp = require('mkdirp');
                 data: []
             });
           }
-          
+         
           
         } else {
-          
-          bcrypt.compare(req.body.password, data.password, function(erreur, result) {
+          bcrypt.compare(req.body.password, user.password, function(erreur, result) {
             
             if(result) {
-              basUrl =  req.protocol + '://' + req.headers.host ;
-              User.userObject(basUrl, data.cin, (data1) => { 
                 return res.status(200).json({
                   status: true,
                   message: "Success",
-                  data: data1
+                  data: user
+                  
                 });
-          });
-              
-      
+
             } else {
               return res.status(401).json({
                 status: false,

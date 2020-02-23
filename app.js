@@ -1,14 +1,9 @@
 const express = require('express');
-const app = express();
 const morgan = require('morgan');
+const app = express();
 const bodyparser = require('body-parser');
-const multer = require('multer');
-const upload = multer();
-
-const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/user');
-const customerRoutes = require('./api/routes/customer');
-
+const gymRoutes = require('./api/routes/gym');
 app.use(morgan('dev'));
 app.use(bodyparser.urlencoded({extended: true}));
 
@@ -34,8 +29,7 @@ app.use((req, res, next) => {
 
 // Routes which should handle requests
 app.use('/user', userRoutes);
-app.use('/orders', orderRoutes);
-app.use('/customer', customerRoutes);
+app.use('/gym', gymRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not found');

@@ -8,7 +8,7 @@ const User = function(user) {
     this.birthday = user.birthday;
     this.city = user.city;
     this.vehicle = user.vehicle;
-    this.min_orders = user.min_orders;
+    this.min_orders = user.min_ofindUserrders;
     this.about_us = user.about_us;
     this.phone = user.phone;
     this.email = user.email;
@@ -82,8 +82,9 @@ const User = function(user) {
     // find user by Username
     User.findUser = (Username, result) => {
       sql.query(
-        `SELECT ville, vehicule, start_cmds, first_name, last_name, forgetPasswordToken, forgetPasswordDateTime,
-          phone, birthday, password, cin, garantie,bank_account_title, bank_account_number, bank_name, email FROM users WHERE 
+        `SELECT * FROM users u,
+        model_has_roles r WHERE u.id= r.model_id
+        AND 
         cin = "${Username}"
         OR
         email = "${Username}"
@@ -165,30 +166,19 @@ const User = function(user) {
 
   // userObject function
 
-    User.userObject = function(basUrl, cin, data) {
-      
-      sql.query(`SELECT ville as city,vehicule as vehicle, start_cmds as  min_orders, first_name, last_name,  email, active,disponibilite,
-      phone, birthday, cin, garantie as deposit,bank_account_title, bank_account_number, bank_name, isLocalization FROM users WHERE cin = "${cin}"`, (err, res) => {
+    User.userObject = function(id_user, data) {
+
+      sql.query(`SELECT * FROM model_has_roles WHERE model_id = "${id_user}"`, (err, res) => {
         if (err) {
-          console.log("error: ", err);
           data(err);
           return;
         }
 
 
     // found costomer
+    console.log(res)
         if (res.length) {
-             
-          const imageObject = {
-            cinImage: this.imagePath(basUrl, cin, "CIN"),
-            crImage : this.imagePath(basUrl, cin, "CR"),
-            ribImage : this.imagePath(basUrl, cin, "RIB"),
-            avatarImage : this.imagePath(basUrl, cin, "AVATOR"),
-          }
-          
-          const object = {...res[0], ...imageObject }
-          data(object);
-          return;
+          return res;
         }
         // not found Customer with the id
         data(null);
