@@ -3,7 +3,7 @@ const  multer = require('multer');
 const fs = require('fs');
 
 exports.getAllGymByUserId = (req, res) => {
-   Gym.getAllGymByUserId(req.body.userid, (err, data) => {
+   Gym.getAllGymByUserId(req.params.userid, (err, data) => {
        if (err)
          res.status(500).send({
            message:
