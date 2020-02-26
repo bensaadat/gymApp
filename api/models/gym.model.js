@@ -62,5 +62,23 @@ Gym.getAllGym = (result) => {
 };
 
 
+// get All Gym By UserId
+Gym.updateGym = (req, result) => {
+  sql.query(`UPDATE gym SET name= "${req.body.name}", discription= "${req.body.discription}", address = "${req.body.address}", city = "${req.body.city}" WHERE id = ${req.body.id}`, 
+  function (err, data) {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+// found costomer
+    else {
+      result(null, data);
+      return;
+    }
+  });
+};
+
+
 
 module.exports = Gym;

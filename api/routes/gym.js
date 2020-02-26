@@ -11,5 +11,8 @@ router.get("/getAllGym", Gym.getAllGym);
 // create Gym
 router.post("/createGym", Gym.createGym);
 
+// Update Gym
+router.post("/updateGym", Gym.updateGym);
+
 
 module.exports = router;

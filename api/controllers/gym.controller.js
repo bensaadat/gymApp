@@ -39,3 +39,17 @@ exports.createGym = (req, res) => {
    });
 };
 
+
+exports.updateGym = (req, res) => {
+  Gym.updateGym(req,(err, data) => {
+    console.log(data);
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving customers."
+        });
+      else res.send(data);
+      
+   });
+};
+
