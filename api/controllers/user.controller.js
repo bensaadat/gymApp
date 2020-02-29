@@ -554,12 +554,87 @@ exports.profile = (req, res) => {
   });
 };
 
+
+    // user creted by ---------------------------------------------------------------------------------------
+    exports.usersCreatedBy = (req, res) => {
+      // check availability 
+      User.usersCreatedBy(req.params.user_id, (err, data) => {
+        console.log(data);
+        
+       if (err) {
+         return res.status(404).json({
+           status: false,
+           message: err
+         });
+         
+       } else {
+        return res.status(200).json({
+          status: true,
+          data: data,
+        });
+        
+       }
+     });
+   };
+
+      // user creted by ---------------------------------------------------------------------------------------
+    exports.getAllCoachByGym = (req, res) => {
+        // check availability 
+        User.getAllCoachByGym(req.params.id_gym, (err, data) => {
+         if (err) {
+           return res.status(404).json({
+             status: false,
+             message: err
+           });
+           
+         } else {
+          return res.status(200).json({
+            status: true,
+            data: data,
+          });
+          
+         }
+       });
+     };
+    
+           // user creted by ---------------------------------------------------------------------------------------
+    exports.getGymByCoach = (req, res) => {
+      // check availability 
+      User.getGymByCoach(req.params.user_id, (err, data) => {
+       if (err) {
+         return res.status(404).json({
+           status: false,
+           message: err
+         });
+         
+       } else {
+        return res.status(200).json({
+          status: true,
+          data: data,
+        });
+        
+       }
+     });
+   };
+
+      // user creted by ---------------------------------------------------------------------------------------
+      exports.deleteUser = (req, res) => {
+        // check availability 
+        User.deleteUser(req.params.user_id, (err, data) => {
+         if (err) {
+           return res.status(404).json({
+             status: false,
+             message: err
+           });
+           
+         } else {
+          return res.status(200).json({
+            status: true,
+            message: "data user deleted"
+          });
+          
+         }
+       });
+     };
+
   
-
-// user reset_Password http://localhost:3000/user/reser_password/[forgetPasswordToken]
-// exports.reset_Password = (req, res) => {
-// check if ForgetPassword Link is expired 
-// if Expired return 404 status false Message "Your Link has been Expired"
-// else return 200 status true "Please Generate New Password"
-
-

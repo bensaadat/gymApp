@@ -298,6 +298,81 @@ const User = function(user) {
       });
     };
 
+    User.usersCreatedBy = (user_id, result) => {
+      sql.query(
+        `SELECT * FROM users where users.creted_by =  ${user_id} and users.id != ${user_id} `, (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+        }
+    // found costomer
+        if (res.length) {
+          result(null, res);
+          return;
+        }
+    
+        // not found user with the id
+        result(null, false);
+      });
+    };
+
+    User.getAllCoachByGym = (id_gym, result) => {
+      sql.query(
+        `SELECT * FROM users  
+        JOIN coach on coach.user_id = users.id
+        where coach.gym_id =  ${id_gym} `, (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        }
+    // found costomer
+        if (res.length) {
+          result(null, res);
+          return;
+        }
+    
+        // not found user with the id
+        result(null, false);
+      });
+    };
+
+    User.getGymByCoach = (user_id, result) => {
+      sql.query(
+        `SELECT * FROM gym where id_user =  ${user_id} `, (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        }
+    // found costomer
+        if (res.length) {
+          result(null, res);
+          return;
+        }
+    
+        // not found user with the id
+        result(null, false);
+      });
+    };
+
+    User.deleteUser = (user_id, result) => {
+      sql.query(
+        `DELETE  FROM users where id =  ${user_id} `, (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        }
+    // found costomer
+        if (res.length) {
+          result(null, res);
+          return;
+        }
+    
+        // not found user with the id
+        result(null, false);
+      });
+    };
+
   
 
 module.exports = User;

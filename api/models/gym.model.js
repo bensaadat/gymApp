@@ -47,7 +47,7 @@ Gym.getAllGym = (result) => {
  Gym.createGym = (req, result) => {
   sql.query(`INSERT INTO gym (name, id_user, discription, address, city, phone) values 
   ("${req.body.name}", ${req.body.id_user}, "${req.body.discription}","${req.body.address}", "${req.body.city}","${req.body.phone}")`, 
-  function (err, data) {
+  req, function (err, data) {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -55,7 +55,8 @@ Gym.getAllGym = (result) => {
     }
 // found costomer
     else {
-      result(null, data);
+      
+      result(null, { id: data.insertId, ...req });
       return;
     }
   });
