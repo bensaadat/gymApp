@@ -637,4 +637,23 @@ exports.profile = (req, res) => {
        });
      };
 
+        // user creted by ---------------------------------------------------------------------------------------
+        exports.approveUser = (req, res) => {
+          // check availability 
+          User.approveUser(req.body.user_id, (err, data) => {
+           if (err) {
+             return res.status(404).json({
+               status: false,
+               message: err
+             });
+             
+           } else {
+            return res.status(200).json({
+              status: true,
+              message: "data user deleted"
+            });
+            
+           }
+         });
+       };
   
