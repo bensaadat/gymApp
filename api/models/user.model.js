@@ -373,6 +373,26 @@ const User = function(user) {
       });
     };
 
+    User.approveUser = (user_id, result) => {
+      sql.query(
+        `UPDATE users
+        SET statut = 'active'
+       where id =  ${user_id} `, (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        }
+    // found costomer
+        if (res.length) {
+          result(null, res);
+          return;
+        }
+    
+        // not found user with the id
+        result(null, false);
+      });
+    };
+
   
 
 module.exports = User;

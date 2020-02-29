@@ -12,6 +12,7 @@ router.get("/usersCreatedBy/:user_id", User.usersCreatedBy);
 router.get("/getAllCoachByGym/:id_gym", User.getAllCoachByGym);
 router.get("/getGymByCoach/:user_id", User.getGymByCoach);
 router.delete("/deleteUser/:user_id", User.deleteUser);
+router.post("/approveUser/:user_id", User.approveUser);
 
 router.post("/loginjwt", User.loginjwt);
 // Retrieve all users
