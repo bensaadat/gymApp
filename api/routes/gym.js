@@ -14,5 +14,8 @@ router.post("/createGym", Gym.createGym);
 // Update Gym
 router.post("/updateGym", Gym.updateGym);
 
+// Get ALL gym by Coach
+router.get("/getGymByCoach/:user_id", Gym.getGymByCoach);
+
 
 module.exports = router;
