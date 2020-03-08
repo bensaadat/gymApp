@@ -27,15 +27,25 @@ exports.getAllGym = (req, res) => {
 };
 
 exports.createGym = (req, res) => {
-  Gym.createGym(req,(err, data) => {
-    console.log(data);
+  const gym = new Gym({
+    name: req.body.name,
+    id_user : req.body.id_user,
+    discription : req.body.discription,
+    address : req.body.address,
+    city : req.body.city, 
+    phone : req.body.phone  
+});
+  Gym.createGym(gym,(err, data) => {
       if (err)
         res.status(500).send({
           message:
             err.message || "Some error occurred while retrieving customers."
         });
-      else res.send(data);
-      
+      else{
+        res.status(200).send({
+            data
+        });
+      } 
    });
 };
 
