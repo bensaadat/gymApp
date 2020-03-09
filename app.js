@@ -4,6 +4,7 @@ const app = express();
 const bodyparser = require('body-parser');
 const userRoutes = require('./api/routes/user');
 const gymRoutes = require('./api/routes/gym');
+const membersRoutes = require('./api/routes/members');
 app.use(morgan('dev'));
 app.use(bodyparser.urlencoded({extended: true}));
 
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 // Routes which should handle requests
 app.use('/user', userRoutes);
 app.use('/gym', gymRoutes);
+app.use('/members', membersRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not found');
