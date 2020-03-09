@@ -8,6 +8,9 @@ router.get("/getAllMembersById_gym/:gymid", Members.getAllMembersById_gym);
 // get All Memebers 
 router.get("/getAllMembers", Members.getAllMembers);
 
+// get All Memebers 
+router.get("/getSingleMembersById/:id", Members.getSingleMembersById);
+
 
 
 

@@ -21,7 +21,8 @@ const Members = function(member) {
         // not found member with the id
         result(null, false);
       });
-    };
+  };
+
     // get All Members
   Members.getAllMembers = (result) => {
     sql.query(
@@ -41,6 +42,27 @@ const Members = function(member) {
       result(null, false);
     });
   };
+
+    // get Single Member By Id
+  Members.getSingleMembersById = (id,result) => {
+   sql.query(`SELECT * FROM members WHERE id = "${id}"`, (err, res) => {
+    if (err) {
+     console.log("error: ", err);
+     result(err, null);
+     return;
+    }
+    // found member
+    if (res.length) {
+        result(null, res);
+        return;
+    }
+    // not found member with the id
+       result(null, false);
+    });
+  };
+      
+
+
 
 
   
