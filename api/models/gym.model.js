@@ -1,6 +1,12 @@
 const sql = require("./db.js");
 // constructor
-const Gym = function() {
+const Gym = function(gym) {
+  this.name = gym.name;
+  this.id_user = gym.id_user,
+  this.discription = gym.discription,
+  this.address = gym.address,
+  this.city = gym.city, 
+  this.phone = gym.phone 
 };
 
 // get All Gym By UserId
@@ -44,10 +50,10 @@ Gym.getAllGym = (result) => {
 };
 
  // get All Gym By UserId
- Gym.createGym = (req, result) => {
+ Gym.createGym = (newGym, result) => {
   sql.query(`INSERT INTO gym (name, id_user, discription, address, city, phone) values 
-  ("${req.body.name}", ${req.body.id_user}, "${req.body.discription}","${req.body.address}", "${req.body.city}","${req.body.phone}")`, 
-  req, function (err, data) {
+  ("${newGym.name}", ${newGym.id_user}, "${newGym.discription}","${newGym.address}", "${newGym.city}","${newGym.phone}")`, 
+  newGym, function (err, data) {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -55,10 +61,28 @@ Gym.getAllGym = (result) => {
     }
 // found costomer
     else {
-      
-      result(null, { id: data.insertId, ...req });
+      result(null, newGym);
       return;
     }
+  });
+};
+
+
+Gym.getGymByCoach = (user_id, result) => {
+  sql.query(
+    `SELECT * FROM gym where id_user =  ${user_id} `, (err, res) => {
+    if (err) {
+      result(err, null);
+      return;
+    }
+// found costomer
+    if (res.length) {
+      result(null, res);
+      return;
+    }
+
+    // not found user with the id
+    result(null, false);
   });
 };
 

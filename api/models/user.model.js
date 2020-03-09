@@ -337,23 +337,6 @@ const User = function(user) {
       });
     };
 
-    User.getGymByCoach = (user_id, result) => {
-      sql.query(
-        `SELECT * FROM gym where id_user =  ${user_id} `, (err, res) => {
-        if (err) {
-          result(err, null);
-          return;
-        }
-    // found costomer
-        if (res.length) {
-          result(null, res);
-          return;
-        }
-    
-        // not found user with the id
-        result(null, false);
-      });
-    };
 
     User.deleteUser = (user_id, result) => {
       sql.query(

@@ -597,25 +597,7 @@ exports.profile = (req, res) => {
        });
      };
     
-           // user creted by ---------------------------------------------------------------------------------------
-    exports.getGymByCoach = (req, res) => {
-      // check availability 
-      User.getGymByCoach(req.params.user_id, (err, data) => {
-       if (err) {
-         return res.status(404).json({
-           status: false,
-           message: err
-         });
-         
-       } else {
-        return res.status(200).json({
-          status: true,
-          data: data,
-        });
-        
-       }
-     });
-   };
+
 
       // user creted by ---------------------------------------------------------------------------------------
       exports.deleteUser = (req, res) => {
